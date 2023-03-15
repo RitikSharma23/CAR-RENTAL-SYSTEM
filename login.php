@@ -1,3 +1,15 @@
+<?php
+ob_start();
+require 'API/car.php';
+
+if($admin->check_auth()){
+  header('Location: home.php');
+  exit;
+}
+
+
+
+?>
 
 <!DOCTYPE html>
 
@@ -7,7 +19,7 @@
   class="light-style customizer-hide"
   dir="ltr"
   data-theme="theme-default"
-  data-assets-path="../assets/"
+  data-assets-path="assets/"
   data-template="vertical-menu-template-free"
 >
   <head>
@@ -22,7 +34,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon/favicon.ico" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -33,25 +45,25 @@
     />
 
     <!-- Icons. Uncomment required icon fonts -->
-    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+    <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="../assets/vendor/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="../assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="../assets/css/demo.css" />
+    <link rel="stylesheet" href="assets/vendor/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="assets/css/demo.css" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
 
     <!-- Page CSS -->
     <!-- Page -->
-    <link rel="stylesheet" href="../assets/vendor/css/pages/page-auth.css" />
+    <link rel="stylesheet" href="assets/vendor/css/pages/page-auth.css" />
     <!-- Helpers -->
-    <script src="../assets/vendor/js/helpers.js"></script>
+    <script src="assets/vendor/js/helpers.js"></script>
 
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="../assets/js/config.js"></script>
+    <script src="assets/js/config.js"></script>
   </head>
 
   <body>
@@ -227,45 +239,41 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../assets/vendor/js/bootstrap.js"></script>
-    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="assets/vendor/libs/popper/popper.js"></script>
+    <script src="assets/vendor/js/bootstrap.js"></script>
+    <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-    <script src="../assets/vendor/js/menu.js"></script>
+    <script src="assets/vendor/js/menu.js"></script>
     <!-- endbuild -->
 
     <!-- Vendors JS -->
 
     <!-- Main JS -->
-    <script src="../assets/js/main.js"></script>
+    <script src="assets/js/main.js"></script>
 
     <!-- Page JS -->
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
-
-    <!-- <script src="auth.js"></script> -->
     <script>
 
 
 
 
      form = document.querySelector("form");
-form.addEventListener("submit", async (e) => {
+  form.addEventListener("submit", async (e) => {
   e.preventDefault();
   newform = new FormData();
   newform.append("phone", document.getElementById("phone").value);
   newform.append("password", document.getElementById("password").value);
   newform.append("obj", "login");
-  let response = await fetch("http://localhost/car.php", {
+  let response = await fetch("API/car.php", {
     method: "POST",
     body: newform,   
     mode: "cors",
     credentials: "include"
   });
-
-  console.log(response)
 
   let data = await response.json();
 
@@ -279,59 +287,6 @@ form.addEventListener("submit", async (e) => {
 
 });
 
-
-
-$.ajax({
-  url: 'http://localhost/car.php',
-  method: 'POST',
-  data: {obj:'check_auth'},
-  xhrFields: {
-    withCredentials: true
-  },
-  success: function(response) {
-    console.log(response);
-  },
-  error: function(xhr, status, error) {
-    console.log(error);
-  }
-});
-
-
-
-
-
-
-var xhr = (
-			(
-				window.XMLHttpRequest &&
-				(window.location.protocol !== "file:" || !window.ActiveXObject)
-			) ?
-			function() {
-				return new window.XMLHttpRequest();
-			} :
-			function() {
-				try {
-					return new window.ActiveXObject("Microsoft.XMLHTTP");
-				} catch(e) {}
-			}
-		);
-
-		function testAjax(){
-
-      var request = xhr();
-
-			request.open(
-				"GET",
-				("http://localhost/car.php?obj=check_auth"),
-				false
-			);
-
-			request.send();
-			console.log(request.responseText);
-      
-		}
-
-    testAjax()
 
     </script>
   </body>
