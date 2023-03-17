@@ -136,7 +136,7 @@ require 'check.php';
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
+            <li class="menu-item ">
               <a href="home.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Home</div>
@@ -155,7 +155,7 @@ require 'check.php';
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item ">
+            <li class="menu-item active">
               <a href="taxes.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-book"></i>
                 <div data-i18n="Analytics">Taxes</div>
@@ -263,6 +263,166 @@ require 'check.php';
                   <!-- / Navbar -->
         
                   <!-- Content wrapper -->
+
+                  <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+
+              <!-- Bootstrap modals -->
+             
+                    <!-- Default Modal -->
+                    <div class="col-lg-4 col-md-6">
+                      <div class="mt-3">
+                        <!-- Button trigger modal -->
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#basicModal"
+                        >
+                          Add Tax
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel1">Add Tax</h5>
+                                <button
+                                  type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                  id="addtax"
+                                ></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row g-2">
+                                  <div class="col mb-0">
+                                    <label for="taxname" class="form-label">Tax Name</label>
+                                    <input type="text" id="taxname" class="form-control" placeholder="Tax Name" style="text-transform: uppercase;"/>
+                                  </div>
+                                  <div class="col mb-0">
+                                    <label for="taxper" class="form-label">Tax Percentage</label>
+                                    <input type="number" id="taxper" class="form-control" placeholder="Tax Percentage" />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="closeadd">
+                                  Close
+                                </button>
+                                <button type="button" class="btn btn-primary" id="addtaxbtn">Add Tax</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Vertically Centered Modal -->
+                    <div class="col-lg-4 col-md-6">
+                      <div class="mt-3">
+                        <!-- Button trigger modal -->
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-bs-toggle="modal"
+                          data-bs-target="#modalCenter"
+                          id="edittax"
+                          hidden
+                        >
+                          Edit Tax
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalCenterTitle">Edit Tax</h5>
+                                <button
+                                  type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                  id="editclose"
+                                ></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="row g-2">
+                                  <div class="col mb-0">
+                                    <label for="emailWithTitle" class="form-label">Tax Name</label>
+                                    <input type="number" name="id" id="id" hidden>
+                                    <input
+                                      type="text"
+                                      id="etaxname"
+                                      class="form-control"
+                                      placeholder="Tax Name"
+                                    />
+                                  </div>
+                                  <div class="col mb-0">
+                                    <label for="dobWithTitle" class="form-label">Tax Percentage</label>
+                                    <input
+                                      type="number"
+                                      id="etaxper"
+                                      class="form-control"
+                                      placeholder="Tax Percantage"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="closeedit">
+                                  Close
+                                </button>
+                                <button type="button" class="btn btn-primary" id="savetaxbtn">Save changes</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                   
+              
+              <!--/ Bootstrap modals -->
+
+               <!-- Bootstrap Table with Header - Light -->
+               <div class="card" >
+                <h5 class="card-header"></h5>
+                <div class="table-responsive text-nowrap" style="min-height: 400px;">
+
+                  <table class="table">
+                    <thead class="table-light">
+                      <tr>
+                        <th>Tax Name</th>
+                        <th>Tax Percentage</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0" id="table-body">
+
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+              <!-- Bootstrap Table with Header - Light -->
+
+            </div>
+
+            
+            <!-- / Content -->
+
+            <!-- Footer -->
+         
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+          </div>
                 
                   <!-- Content wrapper -->
                 </div>
@@ -312,6 +472,201 @@ require 'check.php';
       }
     });
   });
+
+  async function main() {
+  function loaddata(){
+  newform = new FormData();
+    newform.append("obj", "tax_display");
+    return fetch("API/car.php", {
+      method: "POST",
+      body: newform,   
+      mode: "cors",
+      credentials: "include"
+    }).then(response => response.json());
+  }
+
+  let data = await loaddata();
+
+document.getElementById("table-body").innerHTML="";
+
+  
+  for (let i = 0; i < data.data.length; i++) {
+
+  
+const tableBody = document.getElementById('table-body');
+
+const newRow = document.createElement('tr');
+
+const taxNameCell = document.createElement('td');
+taxNameCell.textContent = data.data[i].tax_name;
+
+const taxPercentageCell = document.createElement('td');
+taxPercentageCell.textContent = data.data[i].tax_percentage;
+
+const actionCell = document.createElement('td');
+
+const dropdownDiv = document.createElement('div');
+dropdownDiv.className = 'dropdown';
+
+const dropdownButton = document.createElement('button');
+dropdownButton.type = 'button';
+dropdownButton.className = 'btn p-0 dropdown-toggle hide-arrow';
+dropdownButton.setAttribute('data-bs-toggle', 'dropdown');
+
+const dropdownIcon = document.createElement('i');
+dropdownIcon.className = 'bx bx-dots-vertical-rounded';
+
+dropdownButton.appendChild(dropdownIcon);
+
+const dropdownMenu = document.createElement('div');
+dropdownMenu.className = 'dropdown-menu';
+
+const editDropdownItem = document.createElement('a');
+editDropdownItem.className = 'dropdown-item';
+editDropdownItem.href = 'javascript:void(0);';
+
+const editIcon = document.createElement('i');
+editIcon.className = 'bx bx-edit-alt me-1';
+
+editDropdownItem.textContent = 'Edit';
+
+editDropdownItem.appendChild(editIcon);
+
+editDropdownItem.addEventListener("click", function() {
+  const button = document.getElementById("edittax");
+    button.click();
+    document.getElementById("id").value=data.data[i].id;
+    document.getElementById("etaxname").value=data.data[i].tax_name
+    document.getElementById("etaxper").value=data.data[i].tax_percentage
+});
+
+
+
+const deleteDropdownItem = document.createElement('a');
+deleteDropdownItem.className = 'dropdown-item';
+deleteDropdownItem.href = 'javascript:void(0);';
+
+const deleteIcon = document.createElement('i');
+deleteIcon.className = 'bx bx-trash me-1';
+
+deleteDropdownItem.textContent = 'Delete';
+
+deleteDropdownItem.appendChild(deleteIcon);
+
+deleteDropdownItem.addEventListener("click", function() {
+  deletetax(data.data[i].id)    
+});
+
+dropdownMenu.appendChild(editDropdownItem);
+dropdownMenu.appendChild(deleteDropdownItem);
+
+dropdownDiv.appendChild(dropdownButton);
+dropdownDiv.appendChild(dropdownMenu);
+
+newRow.appendChild(taxNameCell);
+newRow.appendChild(taxPercentageCell);
+actionCell.appendChild(dropdownDiv);
+newRow.appendChild(actionCell);
+
+tableBody.appendChild(newRow);
+
+
+
+
+}
+}
+
+main();
+
+async function edittax() {
+  console.log(document.getElementById("id").value)
+  function loaddata(){
+  newform = new FormData();
+    newform.append("obj", "tax_edit");
+    newform.append("id", document.getElementById("id").value);
+    newform.append("taxname", document.getElementById("etaxname").value);
+    newform.append("taxper", document.getElementById("etaxper").value);
+    return fetch("API/car.php", {
+      method: "POST",
+      body: newform,   
+      mode: "cors",
+      credentials: "include"
+    }).then(response => response.json());
+  }
+
+  let data = await loaddata();
+
+  if(data.message){
+    main();
+    const button = document.getElementById("editclose");
+    button.click();
+    document.getElementById("eid").value=""
+  document.getElementById("etaxname").value=""
+  document.getElementById("etaxper").value=""
+  }else{
+    alert("Something Went Wrong! \n Please Try Again Later");
+  }
+}
+  
+
+async function addtax() {
+  function loaddata(){
+  newform = new FormData();
+    newform.append("obj", "tax_add");
+    newform.append("taxname", document.getElementById("taxname").value);
+    newform.append("taxper", document.getElementById("taxper").value);
+    return fetch("API/car.php", {
+      method: "POST",
+      body: newform,   
+      mode: "cors",
+      credentials: "include"
+    }).then(response => response.json());
+  }
+
+  let data = await loaddata();
+
+  if(data.message){
+    main();
+    const button = document.getElementById("closeadd");
+    button.click();
+    document.getElementById("taxname").value=""
+  document.getElementById("taxper").value=""
+  }else{
+    alert("Something Went Wrong! \n Please Try Again Later");
+  }
+}
+  
+
+async function deletetax(id) {
+  function loaddata(){
+  newform = new FormData();
+    newform.append("obj", "tax_delete");
+    newform.append("id", id);
+    return fetch("API/car.php", {
+      method: "POST",
+      body: newform,   
+      mode: "cors",
+      credentials: "include"
+    }).then(response => response.json());
+  }
+
+  let data = await loaddata();
+
+  if(data.message){
+    main();
+  }else{
+    alert("Something Went Wrong! \n Please Try Again Later");
+  }
+}
+  
+
+document.getElementById("savetaxbtn").addEventListener("click", edittax);
+document.getElementById("addtaxbtn").addEventListener("click", addtax);
+
+
+
+
+
     </script>
  
  

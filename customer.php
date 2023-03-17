@@ -137,7 +137,7 @@ require 'check.php';
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item ">
-              <a href="index.html" class="menu-link">
+              <a href="home.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Home</div>
               </a>
@@ -146,7 +146,7 @@ require 'check.php';
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item ">
-              <a href="vehicle.html" class="menu-link">
+              <a href="vehicle.php" class="menu-link">
                 
                 <i class="menu-icon tf-icons bx bx-car"></i>
                 <div data-i18n="Analytics">Vehicles</div>
@@ -156,7 +156,7 @@ require 'check.php';
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item ">
-              <a href="taxes.html" class="menu-link">
+              <a href="taxes.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-book"></i>
                 <div data-i18n="Analytics">Taxes</div>
               </a>
@@ -165,7 +165,7 @@ require 'check.php';
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item active">
-              <a href="customers.html" class="menu-link">
+              <a href="customer.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Analytics">Customers</div>
               </a>
@@ -174,7 +174,7 @@ require 'check.php';
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item ">
-              <a href="invoices.html" class="menu-link">
+              <a href="invoices.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-credit-card-front"></i>
                 <div data-i18n="Analytics">Invoices</div>
               </a>
@@ -598,7 +598,7 @@ async function editCustomer() {
     newform.append("id", document.getElementById("id").value);
     newform.append("name", document.getElementById("ename").value);
     newform.append("address", document.getElementById("eaddress").value);
-    newform.append("gst", document.getElementById("egst").value);
+    newform.append("gst", document.getElementById("egst").value.toUpperCase());
     return fetch("API/car.php", {
       method: "POST",
       body: newform,   
@@ -630,7 +630,7 @@ async function addCustomer() {
     newform.append("id", "null");
     newform.append("name", document.getElementById("name").value);
     newform.append("address", document.getElementById("address").value);
-    newform.append("gst", document.getElementById("gst").value);
+    newform.append("gst", document.getElementById("gst").value.toUpperCase());
     return fetch("API/car.php", {
       method: "POST",
       body: newform,   

@@ -116,7 +116,7 @@ class Customer{
   
   function customer_add($con) {
     // get customer data from API request
-    $name = $_REQUEST['name'];
+    $name = ucwords($_REQUEST['name']);
     $address = $_REQUEST['address'];
     $gst = $_REQUEST['gst'];
     
@@ -142,7 +142,7 @@ class Customer{
   function customer_edit($con) {
     // get customer data from API request
     $id = $_REQUEST['id'];
-    $name = $_REQUEST['name'];
+    $name = ucwords($_REQUEST['name']);
     $address = $_REQUEST['address'];
     $gst = $_REQUEST['gst'];
     
@@ -191,17 +191,15 @@ class Customer{
 
 class Vehicle{
   function vehicle_display($con) {
-    // retrieve all vehicles from database
+    if(isset($_SESSION['phone'])) {
     $query = "SELECT * FROM `vehicle`";
     $result = mysqli_query($con, $query);
-
-    // create array of vehicles data
     $data = array();
     while ($row = mysqli_fetch_assoc($result)) {
         $data[] = array(
-            'vname' => $row['vname'],
+            'vname' => ucwords($row['vname']),
             'vnumber' => $row['vnumber'],
-            'vserial' => $row['vserial'],
+            'vserial' => strtoupper($row['vserial']),
             'local_km_range' => $row['local_km_range'],
             'local_km_rate' => $row['local_km_rate'],
             'local_ext_km' => $row['local_ext_km'],
@@ -220,117 +218,210 @@ class Vehicle{
         $response = array('message' => true);
         echo json_encode($response);
     }
-}
+  } else {
+    echo '{"message": "Unauthorized"}';
+    }
+  }
 
   
-function vehicle_add($con) {
-  if(isset($_SESSION['phone'])) {
-      $vnumber = $_REQUEST['vnumber'];
-      $query = "SELECT * FROM `vehicle` WHERE `vnumber` = '$vnumber'";
+  function vehicle_add($con) {
+    if(isset($_SESSION['phone'])) {
+        $vnumber = strtoupper($_REQUEST['vnumber']);
+        $query = "SELECT * FROM `vehicle` WHERE `vnumber` = '$vnumber'";
+        $result = mysqli_query($con, $query);
+        if(mysqli_num_rows($result) >= 1) {
+            echo '{"message": false}';
+            return;
+        }
+        $vname = ucwords($_REQUEST['vname']);
+        $vserial = strtoupper($_REQUEST['vserial']);
+        $local_km_range = $_REQUEST['local_km_range'];
+        $local_km_rate = $_REQUEST['local_km_rate'];
+        $local_ext_km = $_REQUEST['local_ext_km'];
+        $local_ext_hour = $_REQUEST['local_ext_hour'];
+        $out_km_range = $_REQUEST['out_km_range'];
+        $out_km_rate = $_REQUEST['out_km_rate'];
+        $out_ext_km = $_REQUEST['out_ext_km'];
+        $out_ext_hour = $_REQUEST['out_ext_hour'];
+
+        $query = "INSERT INTO `vehicle` (`vnumber`, `vname`, `vserial`, `local_km_range`, `local_km_rate`, `local_ext_km`, `local_ext_hour`, `out_km_range`, `out_km_rate`, `out_ext_km`, `out_ext_hour`) 
+                  VALUES ('$vnumber', '$vname', '$vserial', '$local_km_range', '$local_km_rate', '$local_ext_km', '$local_ext_hour', '$out_km_range', '$out_km_rate', '$out_ext_km', '$out_ext_hour')";
+        $result = mysqli_query($con, $query);
+        if($result) {
+            $data = array('vnumber' => $vnumber, 'vname' => $vname, 'vserial' => $vserial, 'local_km_range' => $local_km_range, 'local_km_rate' => $local_km_rate, 'local_ext_km' => $local_ext_km, 'local_ext_hour' => $local_ext_hour, 'out_km_range' => $out_km_range, 'out_km_rate' => $out_km_rate, 'out_ext_km' => $out_ext_km, 'out_ext_hour' => $out_ext_hour);
+            $response = array('data' => $data, 'message' => true);
+            echo json_encode($response);
+        } else {
+            echo '{"message": "error"}';
+        }
+    } else {
+        echo '{"message": "Unauthorized"}';
+    }
+  }
+
+  
+  function vehicle_edit($con) {
+    if(isset($_SESSION['phone'])) {
+        $vname = $_REQUEST['evname'];
+        $vnumber = $_REQUEST['evnumber'];
+        $vserial = $_REQUEST['evserial'];
+        $local_km_range = $_REQUEST['elocal_km_range'];
+        $local_km_rate = $_REQUEST['elocal_km_rate'];
+        $local_ext_km = $_REQUEST['elocal_ext_km'];
+        $local_ext_hour = $_REQUEST['elocal_ext_hour'];
+        $out_km_range = $_REQUEST['eout_km_range'];
+        $out_km_rate = $_REQUEST['eout_km_rate'];
+        $out_ext_km = $_REQUEST['eout_ext_km'];
+        $out_ext_hour = $_REQUEST['eout_ext_hour'];
+
+        // update vehicle data in database
+        $query = "UPDATE `vehicle` SET 
+            `vname` = '$vname', 
+            `vserial` = '$vserial', 
+            `local_km_range` = '$local_km_range', 
+            `local_km_rate` = '$local_km_rate', 
+            `local_ext_km` = '$local_ext_km', 
+            `local_ext_hour` = '$local_ext_hour', 
+            `out_km_range` = '$out_km_range', 
+            `out_km_rate` = '$out_km_rate', 
+            `out_ext_km` = '$out_ext_km', 
+            `out_ext_hour` = '$out_ext_hour' 
+            WHERE `vnumber` = '$vnumber'";
+        $result = mysqli_query($con, $query);
+
+        // return response based on success or failure of update operation
+        if($result) {
+            $response = array('message' => true);
+            echo json_encode($response);
+        } else {
+            $response = array('message' => false);
+            echo json_encode($response);
+        }
+    } else {
+        echo '{"message":"Unauthorized"}';
+    }
+  }
+
+  
+  function vehicle_delete($con) {
+    if(isset($_SESSION['phone'])) {
+        $vnumber = strtoupper($_REQUEST['vnumber']);
+        $query = "SELECT * FROM `vehicle` WHERE `vnumber` = '$vnumber'";
+        $result = mysqli_query($con, $query);
+        if(mysqli_num_rows($result) == 0) {
+            echo '{"message": "Vehicle does not exist"}';
+            return;
+        }
+        $query = "DELETE FROM `vehicle` WHERE `vnumber` = '$vnumber'";
+        $result = mysqli_query($con, $query);
+        if($result) {
+            echo '{"message": "Vehicle deleted successfully"}';
+        } else {
+            echo '{"message": "Failed to delete vehicle"}';
+        }
+    } else {
+        echo '{"message": "Unauthorized"}';
+    }
+  }
+}
+
+
+// ====================== Taxes ====================================
+
+
+class Taxes{
+
+  function tax_display($con) {
+    if(isset($_SESSION['phone'])) {
+  
+      $query = "SELECT id,tax_name,tax_percentage FROM tax";
       $result = mysqli_query($con, $query);
+      
       if(mysqli_num_rows($result) >= 1) {
-          echo '{"message": false}';
-          return;
-      }
-      $vname = $_REQUEST['vname'];
-      $vserial = $_REQUEST['vserial'];
-      $local_km_range = $_REQUEST['local_km_range'];
-      $local_km_rate = $_REQUEST['local_km_rate'];
-      $local_ext_km = $_REQUEST['local_ext_km'];
-      $local_ext_hour = $_REQUEST['local_ext_hour'];
-      $out_km_range = $_REQUEST['out_km_range'];
-      $out_km_rate = $_REQUEST['out_km_rate'];
-      $out_ext_km = $_REQUEST['out_ext_km'];
-      $out_ext_hour = $_REQUEST['out_ext_hour'];
-
-      $query = "INSERT INTO `vehicle` (`vnumber`, `vname`, `vserial`, `local_km_range`, `local_km_rate`, `local_ext_km`, `local_ext_hour`, `out_km_range`, `out_km_rate`, `out_ext_km`, `out_ext_hour`) 
-                VALUES ('$vnumber', '$vname', '$vserial', '$local_km_range', '$local_km_rate', '$local_ext_km', '$local_ext_hour', '$out_km_range', '$out_km_rate', '$out_ext_km', '$out_ext_hour')";
-      $result = mysqli_query($con, $query);
-      if($result) {
-          $data = array('vnumber' => $vnumber, 'vname' => $vname, 'vserial' => $vserial, 'local_km_range' => $local_km_range, 'local_km_rate' => $local_km_rate, 'local_ext_km' => $local_ext_km, 'local_ext_hour' => $local_ext_hour, 'out_km_range' => $out_km_range, 'out_km_rate' => $out_km_rate, 'out_ext_km' => $out_ext_km, 'out_ext_hour' => $out_ext_hour);
-          $response = array('data' => $data, 'message' => true);
-          echo json_encode($response);
+        $data = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = array(
+                'id' => $row['id'],
+                'tax_name' => $row['tax_name'],
+                'tax_percentage' => $row['tax_percentage']
+            );
+        }
+        $response = array('data' => $data, 'message' => true);
+        echo json_encode($response);
       } else {
-          echo '{"message": "error"}';
+        echo '{"message":false}';
       }
-  } else {
-      echo '{"message": "Unauthorized"}';
-  }
-}
-
-  
-function vehicle_edit($con) {
-  if(isset($_SESSION['phone'])) {
-      $id = $_REQUEST['id'];
-      $vname = $_REQUEST['vname'];
-      $vnumber = $_REQUEST['vnumber'];
-      $vserial = $_REQUEST['vserial'];
-      $local_km_range = $_REQUEST['local_km_range'];
-      $local_km_rate = $_REQUEST['local_km_rate'];
-      $local_ext_km = $_REQUEST['local_ext_km'];
-      $local_ext_hour = $_REQUEST['local_ext_hour'];
-      $out_km_range = $_REQUEST['out_km_range'];
-      $out_km_rate = $_REQUEST['out_km_rate'];
-      $out_ext_km = $_REQUEST['out_ext_km'];
-      $out_ext_hour = $_REQUEST['out_ext_hour'];
-
-      // update vehicle data in database
-      $query = "UPDATE `vehicle` SET 
-          `vname` = '$vname', 
-          `vnumber` = '$vnumber', 
-          `vserial` = '$vserial', 
-          `local_km_range` = '$local_km_range', 
-          `local_km_rate` = '$local_km_rate', 
-          `local_ext_km` = '$local_ext_km', 
-          `local_ext_hour` = '$local_ext_hour', 
-          `out_km_range` = '$out_km_range', 
-          `out_km_rate` = '$out_km_rate', 
-          `out_ext_km` = '$out_ext_km', 
-          `out_ext_hour` = '$out_ext_hour' 
-          WHERE `id` = '$id'";
-      $result = mysqli_query($con, $query);
-
-      // return response based on success or failure of update operation
-      if($result) {
-          $response = array('message' => 'Vehicle updated successfully');
-          echo json_encode($response);
-      } else {
-          $response = array('message' => 'Vehicle update failed');
-          echo json_encode($response);
-      }
-  } else {
+    } else {
       echo '{"message":"Unauthorized"}';
+    }
   }
-}
-
   
-function vehicle_delete($con) {
-  if(isset($_SESSION['phone'])) {
-      $vnumber = $_REQUEST['vnumber'];
-      $query = "SELECT * FROM `vehicle` WHERE `vnumber` = '$vnumber'";
+
+
+  function tax_add($con) {
+    
+    if(isset($_SESSION['phone'])) {
+      $taxname = $_REQUEST['taxname'];
+      $taxper = $_REQUEST['taxper'];
+      $query = "INSERT INTO tax (tax_name, tax_percentage) VALUES ('$taxname', '$taxper')";
       $result = mysqli_query($con, $query);
-      if(mysqli_num_rows($result) == 0) {
-          echo '{"message": "Vehicle does not exist"}';
-          return;
-      }
-      $query = "DELETE FROM `vehicle` WHERE `vnumber` = '$vnumber'";
-      $result = mysqli_query($con, $query);
+  
       if($result) {
-          echo '{"message": "Vehicle deleted successfully"}';
+        echo '{"message":true}';
       } else {
-          echo '{"message": "Failed to delete vehicle"}';
+        echo '{"message":false}';
       }
-  } else {
-      echo '{"message": "Unauthorized"}';
+    } else {
+      echo '{"message":"Unauthorized"}';
+    }
   }
-}
-}
 
 
+  function tax_edit($con) {
+    
+    if(isset($_SESSION['phone'])) {
+      $id = $_REQUEST['id'];
+      $taxname = $_REQUEST['taxname'];
+      $taxper = $_REQUEST['taxper'];
+      $query = "UPDATE tax SET tax_name='$taxname', tax_percentage='$taxper' WHERE id='$id'";
+      $result = mysqli_query($con, $query);
+
+      if($result) {
+        echo '{"message":true}';
+      } else {
+        echo '{"message":false}';
+      }
+    } else {
+      echo '{"message":"Unauthorized"}';
+    }
+  }
+
+  function tax_delete($con) {
+    
+    if(isset($_SESSION['phone'])) {
+      $id = $_REQUEST['id'];
+      $query = "DELETE FROM tax WHERE id='$id'";
+      $result = mysqli_query($con, $query);
+
+      if($result) {
+        echo '{"message":true}';
+      } else {
+        echo '{"message":false}';
+      }
+
+    } else {
+      echo '{"message":"Unauthorized"}';
+    }
+  }
+
+
+
+}
 
 $admin = new Login();
 $customer = new Customer();
 $vehicle = new Vehicle();
+$taxes = new Taxes();
 
 switch($choice){
   case 'logout':$admin->sess_destroy();break;
@@ -348,6 +439,13 @@ switch($choice){
   case 'vehicle_add':$vehicle->vehicle_add($conn);break;
   case 'vehicle_edit':$vehicle->vehicle_edit($conn);break;
   case 'vehicle_delete':$vehicle->vehicle_delete($conn);break;
+  
+  
+  case 'tax_display':$taxes->tax_display($conn);break;
+  case 'tax_add':$taxes->tax_add($conn);break;
+  case 'tax_edit':$taxes->tax_edit($conn);break;
+  case 'tax_delete':$taxes->tax_delete($conn);break;
+  
 
 
 }

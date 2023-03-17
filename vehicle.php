@@ -37,7 +37,7 @@ require 'check.php';
       rel="stylesheet"
     />
 
-    <!-- Icons. Uncomment required icon fonts -->
+    <!-- Icons. Uncomment  icon fonts -->
     <link rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
@@ -137,7 +137,7 @@ require 'check.php';
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item ">
-              <a href="index.html" class="menu-link">
+              <a href="home.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Home</div>
               </a>
@@ -145,8 +145,8 @@ require 'check.php';
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item ">
-              <a href="vehicle.html" class="menu-link">
+            <li class="menu-item active">
+              <a href="vehicle.php" class="menu-link">
                 
                 <i class="menu-icon tf-icons bx bx-car"></i>
                 <div data-i18n="Analytics">Vehicles</div>
@@ -156,7 +156,7 @@ require 'check.php';
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item ">
-              <a href="taxes.html" class="menu-link">
+              <a href="taxes.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-book"></i>
                 <div data-i18n="Analytics">Taxes</div>
               </a>
@@ -164,8 +164,8 @@ require 'check.php';
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
-              <a href="customers.html" class="menu-link">
+            <li class="menu-item ">
+              <a href="customer.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
                 <div data-i18n="Analytics">Customers</div>
               </a>
@@ -174,7 +174,7 @@ require 'check.php';
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
             <li class="menu-item ">
-              <a href="invoices.html" class="menu-link">
+              <a href="invoices.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-credit-card-front"></i>
                 <div data-i18n="Analytics">Invoices</div>
               </a>
@@ -268,15 +268,12 @@ require 'check.php';
             <!-- Content -->
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">UI elements /</span> Modals</h4>
 
 
 
 
               <!-- Bootstrap modals -->
-              <div class="card mb-4">
-                <div class="card-body">
-                  <div class="row gy-3">
+              
 
 
                     <!-- Default Modal -->
@@ -309,18 +306,18 @@ require 'check.php';
                                 <div class="row">
                                   <div class="col mb-3">
                                     <label for="vname" class="form-label">Vehicle Name</label>
-                                    <input type="text" id="vname" class="form-control" placeholder="Vehicle Name" />
+                                    <input type="text"  id="vname" class="form-control" placeholder="Vehicle Name" />
                                   </div>
                                 </div>
 
                                 <div class="row g-2">
                                   <div class="col mb-0">
                                     <label for="vnumber" class="form-label">Vehicle No</label>
-                                    <input type="text" id="vnumber" class="form-control" placeholder="Vehicle No" />
+                                    <input type="text"  id="vnumber" class="form-control" placeholder="Vehicle No" style="text-transform:uppercase" />
                                   </div>
                                   <div class="col mb-0">
                                     <label for="vserial" class="form-label">Serial No</label>
-                                    <input type="text" id="vserial" class="form-control" placeholder="Serial No" />
+                                    <input type="text"  id="vserial" class="form-control" placeholder="Serial No" style="text-transform:uppercase"/>
                                   </div>
                                 </div>
 
@@ -332,11 +329,11 @@ require 'check.php';
                                 <div class="row g-2">
                                   <div class="col mb-0">
                                     <label for="local_km_range" class="form-label">KM Range</label>
-                                    <input type="text" id="local_km_range" class="form-control" placeholder="Vehicle No" />
+                                    <input type="number"  id="local_km_range" class="form-control" placeholder="KM Range" />
                                   </div>
                                   <div class="col mb-0">
                                     <label for="local_km_rate" class="form-label">Rate</label>
-                                    <input type="text" id="local_km_rate" class="form-control" placeholder="Serial No" />
+                                    <input type="number"  id="local_km_rate" class="form-control" placeholder="Rate" />
                                   </div>
                                 </div>
 
@@ -344,11 +341,11 @@ require 'check.php';
                                 <div class="row g-2">
                                   <div class="col mb-0">
                                     <label for="local_ext_km" class="form-label">Per Extra KM Charge</label>
-                                    <input type="text" id="local_ext_km" class="form-control" placeholder="Per Extra KM Charge" />
+                                    <input type="number"  id="local_ext_km" class="form-control" placeholder="Per Extra KM Charge" />
                                   </div>
                                   <div class="col mb-0">
                                     <label for="local_ext_hour" class="form-label">Per Extra Hour Charge</label>
-                                    <input type="text" id="local_ext_hour" class="form-control" placeholder="Per Extra Hour Charge" />
+                                    <input type="number"  id="local_ext_hour" class="form-control" placeholder="Per Extra Hour Charge" />
                                   </div>
 
                                   <div class="divider divider-warning">
@@ -361,22 +358,22 @@ require 'check.php';
                                 <div class="row g-2">
                                   <div class="col mb-0">
                                     <label for="out_km_range" class="form-label">KM Range</label>
-                                    <input type="text" id="out_km_range" class="form-control" placeholder="Vehicle No" />
+                                    <input type="number"  id="out_km_range" class="form-control" placeholder="KM Range" />
                                   </div>
                                   <div class="col mb-0">
                                     <label for="out_km_rate" class="form-label">Rate</label>
-                                    <input type="text" id="out_km_rate" class="form-control" placeholder="Serial No" />
+                                    <input type="number"  id="out_km_rate" class="form-control" placeholder="Rate" />
                                   </div>
                                 </div>
 
                                 <div class="row g-2">
                                   <div class="col mb-0">
                                     <label for="out_ext_km" class="form-label">Per Extra KM Charge</label>
-                                    <input type="text" id="out_ext_km" class="form-control" placeholder="Per Extra KM Charge" />
+                                    <input type="number"  id="out_ext_km" class="form-control" placeholder="Per Extra KM Charge" />
                                   </div>
                                   <div class="col mb-0">
                                     <label for="out_ext_hour" class="form-label">Per Extra Hour Charge</label>
-                                    <input type="text" id="out_ext_hour" class="form-control" placeholder="Per Extra Hour Charge" />
+                                    <input type="number"  id="out_ext_hour" class="form-control" placeholder="Per Extra Hour Charge" />
                                   </div>
 
                                   <!-- <hr class="m-0" /> -->
@@ -396,14 +393,11 @@ require 'check.php';
                     </div>
 
 
-
-
-
                     <!-- Slide from Top Modal -->
                     <div class="col-lg-4 col-md-6">
                       <div class="mt-3">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTop">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTop" id="editbtn" hidden>
                           Edit Vehicle
                         </button>
 
@@ -435,21 +429,24 @@ require 'check.php';
 
                                 <div class="row g-2">
                                   <div class="col mb-0">
-                                    <label for="evno" class="form-label">Vehicle No</label>
+                                    <label for="evnumber" class="form-label">Vehicle No</label>
                                     <input
                                       type="text"
-                                      id="evno"
+                                      id="evnumber"
                                       class="form-control"
                                       placeholder="Vehicle No"
+                                      style="text-transform:uppercase"
+                                      disabled
                                     />
                                   </div>
                                   <div class="col mb-0">
-                                    <label for="evsn" class="form-label">Serial No</label>
+                                    <label for="evserial" class="form-label">Serial No</label>
                                     <input
                                       type="text"
-                                      id="evsn"
+                                      id="evserial"
                                       class="form-control"
                                       placeholder="Serial No"
+                                      style="text-transform:uppercase"
                                     />
                                   </div>
                                 </div>
@@ -465,7 +462,7 @@ require 'check.php';
                                     <label for="evno" class="form-label">Km Range</label>
                                     <input
                                       type="text"
-                                      id="elkmr"
+                                      id="elocal_km_range"
                                       class="form-control"
                                       placeholder="KM Range"
                                     />
@@ -474,7 +471,7 @@ require 'check.php';
                                     <label for="evsn" class="form-label">KM Rate</label>
                                     <input
                                       type="text"
-                                      id="elkmp"
+                                      id="elocal_km_rate"
                                       class="form-control"
                                       placeholder="KM Rate"
                                     />
@@ -485,7 +482,7 @@ require 'check.php';
                                     <label for="evno" class="form-label">Per Extra KM Charge</label>
                                     <input
                                       type="text"
-                                      id="elpekmc"
+                                      id="elocal_ext_km"
                                       class="form-control"
                                       placeholder="KM Charge"
                                     />
@@ -494,7 +491,7 @@ require 'check.php';
                                     <label for="evsn" class="form-label">Per Extra Hour Charge</label>
                                     <input
                                       type="text"
-                                      id="elpehc"
+                                      id="elocal_ext_hour"
                                       class="form-control"
                                       placeholder="Hour Charge"
                                     />
@@ -513,7 +510,7 @@ require 'check.php';
                                     <label for="evno" class="form-label">Km Range</label>
                                     <input
                                       type="text"
-                                      id="egkr"
+                                      id="eout_km_range"
                                       class="form-control"
                                       placeholder="KM Range"
                                     />
@@ -522,7 +519,7 @@ require 'check.php';
                                     <label for="evsn" class="form-label">KM Rate</label>
                                     <input
                                       type="text"
-                                      id="gkmp"
+                                      id="eout_km_rate"
                                       class="form-control"
                                       placeholder="KM Rate"
                                     />
@@ -533,7 +530,7 @@ require 'check.php';
                                     <label for="evno" class="form-label">Per Extra KM Charge</label>
                                     <input
                                       type="text"
-                                      id="gpekmc"
+                                      id="eout_ext_km"
                                       class="form-control"
                                       placeholder="KM Charge"
                                     />
@@ -542,7 +539,7 @@ require 'check.php';
                                     <label for="evsn" class="form-label">Per Extra Hour Charge</label>
                                     <input
                                       type="text"
-                                      id="epehc"
+                                      id="eout_ext_hour"
                                       class="form-control"
                                       placeholder="Hour Charge"
                                     />
@@ -551,10 +548,10 @@ require 'check.php';
 
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" id="editclose">
                                   Close
                                 </button>
-                                <button type="button" class="btn btn-primary">Save Changes</button>
+                                <button type="button" class="btn btn-primary" id="editsave">Save Changes</button>
                               </div>
                             </form>
                           </div>
@@ -563,12 +560,7 @@ require 'check.php';
                     </div>
 
                    
-                  </div>
-                </div>
-                <hr class="m-0" />
-               
                 
-              </div>
               <!--/ Bootstrap modals -->
 
               <div class="card" >
@@ -604,36 +596,7 @@ require 'check.php';
             <!-- / Content -->
 
             <!-- Footer -->
-            <footer class="content-footer footer bg-footer-theme">
-              <div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
-                <div class="mb-2 mb-md-0">
-                  ©
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  , made with ❤️ by
-                  <a href="https://themeselection.com" target="_blank" class="footer-link fw-bolder">ThemeSelection</a>
-                </div>
-                <div>
-                  <a href="https://themeselection.com/license/" class="footer-link me-4" target="_blank">License</a>
-                  <a href="https://themeselection.com/" target="_blank" class="footer-link me-4">More Themes</a>
-
-                  <a
-                    href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"
-                    target="_blank"
-                    class="footer-link me-4"
-                    >Documentation</a
-                  >
-
-                  <a
-                    href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
-                    target="_blank"
-                    class="footer-link me-4"
-                    >Support</a
-                  >
-                </div>
-              </div>
-            </footer>
+            
             <!-- / Footer -->
 
             <div class="content-backdrop fade"></div>
@@ -704,27 +667,49 @@ require 'check.php';
  
 
 async function addvehicle() {
-  function loaddata(){
-  newform = new FormData();
-    newform.append("obj", "vehicle_add");
-    newform.append("vname", document.getElementById("vname").value);
-    newform.append("vnumber", document.getElementById("vnumber").value);
-    newform.append("vserial", document.getElementById("vserial").value);
-    newform.append("local_km_range", document.getElementById("local_km_range").value);
-    newform.append("local_km_rate", document.getElementById("local_km_rate").value);
-    newform.append("local_ext_km", document.getElementById("local_ext_km").value);
-    newform.append("local_ext_hour", document.getElementById("local_ext_hour").value);
-    newform.append("out_km_range", document.getElementById("out_km_range").value);
-    newform.append("out_km_rate", document.getElementById("out_km_rate").value);
-    newform.append("out_ext_km", document.getElementById("out_ext_km").value);
-    newform.append("out_ext_hour", document.getElementById("out_ext_hour").value);
-    return fetch("API/car.php", {
-      method: "POST",
-      body: newform,   
-      mode: "cors",
-      credentials: "include"
-    }).then(response => response.json());
+  function loaddata() {
+  let isEmpty = false;
+  const fieldIds = [
+    "vname",
+    "vnumber",
+    "vserial",
+    "local_km_range",
+    "local_km_rate",
+    "local_ext_km",
+    "local_ext_hour",
+    "out_km_range",
+    "out_km_rate",
+    "out_ext_km",
+    "out_ext_hour",
+  ];
+
+  const newform = new FormData();
+  newform.append("obj", "vehicle_add");
+
+  fieldIds.forEach((fieldId) => {
+    const fieldValue = document.getElementById(fieldId).value;
+    if (!fieldValue) {
+      isEmpty = true;
+      document.getElementById(fieldId).focus();
+      return;
+    }
+    newform.append(fieldId, fieldValue);
+  });
+
+  // if any field is empty, return a Promise.reject with an error message
+  if (isEmpty) {
+    return Promise.reject("Please fill all fields.");
   }
+
+  // if all fields are filled, send the data using fetch()
+  return fetch("API/car.php", {
+    method: "POST",
+    body: newform,
+    mode: "cors",
+    credentials: "include",
+  }).then((response) => response.json());
+}
+
 
   let data = await loaddata();
 
@@ -790,7 +775,7 @@ vehicleName.textContent = data.data[i].vname;
 row.appendChild(vehicleName);
 
 const vehicleSerial = document.createElement("td");
-vehicleSerial.textContent = data.data[i].serial;
+vehicleSerial.textContent = data.data[i].vserial;
 row.appendChild(vehicleSerial);
 
 const localKmRange = document.createElement("td");
@@ -854,12 +839,19 @@ editLink.appendChild(editIcon);
 editLink.appendChild(document.createTextNode("Edit"));
 
 editLink.addEventListener("click", function() {
-  const button = document.getElementById("editcust");
+  const button = document.getElementById("editbtn");
     button.click();
-    document.getElementById("id").value=data.data[i].id;
-    document.getElementById("ename").value=data.data[i].name;
-    document.getElementById("eaddress").value=data.data[i].address;
-    document.getElementById("egst").value=data.data[i].gst;
+    document.getElementById("evname").value=data.data[i].vname;
+    document.getElementById("evnumber").value=data.data[i].vnumber;
+    document.getElementById("evserial").value=data.data[i].vserial;
+    document.getElementById("elocal_km_range").value=data.data[i].local_km_range;
+    document.getElementById("elocal_km_rate").value=data.data[i].local_km_rate;
+    document.getElementById("elocal_ext_km").value=data.data[i].local_ext_km;
+    document.getElementById("elocal_ext_hour").value=data.data[i].local_ext_hour;
+    document.getElementById("eout_km_range").value=data.data[i].out_km_range;
+    document.getElementById("eout_km_rate").value=data.data[i].out_km_rate;
+    document.getElementById("eout_ext_km").value=data.data[i].out_ext_km;
+    document.getElementById("eout_ext_hour").value=data.data[i].out_ext_hour;
 });
 
 
@@ -885,8 +877,6 @@ dropdown.appendChild(dropdownMenu);
 action.appendChild(dropdown);
 row.appendChild(action);
 tableBody.appendChild(row);
-
-
 
 }
 }
@@ -918,8 +908,76 @@ async function deleteVehicle(id) {
 }
   
 
+async function editvehicle() {
+  function loaddata() {
+  // create a flag to track if any field is empty
+  let isEmpty = false;
 
-// document.getElementById("save").addEventListener("click", editCustomer);
+  // create a list of input field IDs
+  const fieldIds = [
+    "evname",
+    "evnumber",
+    "evserial",
+    "elocal_km_range",
+    "elocal_km_rate",
+    "elocal_ext_km",
+    "elocal_ext_hour",
+    "eout_km_range",
+    "eout_km_rate",
+    "eout_ext_km",
+    "eout_ext_hour",
+  ];
+
+  // create a new FormData object
+  const newform = new FormData();
+  newform.append("obj", "vehicle_edit");
+
+  // loop through the list of input field IDs and check if any field is empty
+  fieldIds.forEach((fieldId) => {
+    const fieldValue = document.getElementById(fieldId).value;
+    if (!fieldValue) {
+      isEmpty = true;
+      // set focus to the empty field
+      document.getElementById(fieldId).focus();
+      return;
+    }
+    newform.append(fieldId, fieldValue);
+  });
+
+  // if any field is empty, return a Promise.reject with an error message
+  if (isEmpty) {
+    return Promise.reject("Please fill all fields.");
+  }
+
+  // if all fields are filled, send the data using fetch()
+  return fetch("API/car.php", {
+    method: "POST",
+    body: newform,
+    mode: "cors",
+    credentials: "include",
+  }).then((response) => response.json());
+}
+
+
+  let data = await loaddata();
+
+  if(data.message){
+    main();
+    const button = document.getElementById("editclose");
+    button.click();
+    inputs = document.getElementsByTagName('input');
+    for (index = 0; index < inputs.length; ++index) {
+        inputs[index].value=""
+    }
+
+  }else{
+    alert("Something Went Wrong! \n Please Try Again Later");
+  }
+}
+  
+
+
+document.getElementById("editsave").addEventListener("click", editvehicle);
 
 
 
