@@ -580,7 +580,23 @@ main();
 
 async function edittax() {
   console.log(document.getElementById("id").value)
+
+
+  
   function loaddata(){
+    const etaxname = document.getElementById("etaxname").value;
+  const etaxper = document.getElementById("etaxper").value;
+  
+  if(!etaxname){
+    // alert("Please enter a tax name");
+    document.getElementById("etaxname").focus();
+    return;
+  }
+  if(!etaxper){
+    // alert("Please enter a tax percentage");
+    document.getElementById("etaxper").focus();
+    return;
+  }
   newform = new FormData();
     newform.append("obj", "tax_edit");
     newform.append("id", document.getElementById("id").value);
@@ -611,17 +627,33 @@ async function edittax() {
 
 async function addtax() {
   function loaddata(){
-  newform = new FormData();
-    newform.append("obj", "tax_add");
-    newform.append("taxname", document.getElementById("taxname").value);
-    newform.append("taxper", document.getElementById("taxper").value);
-    return fetch("API/car.php", {
-      method: "POST",
-      body: newform,   
-      mode: "cors",
-      credentials: "include"
-    }).then(response => response.json());
+  const taxname = document.getElementById("taxname").value;
+  const taxper = document.getElementById("taxper").value;
+  
+  if(!taxname){
+    // alert("Please enter a tax name");
+    document.getElementById("taxname").focus();
+    return;
   }
+  if(!taxper){
+    // alert("Please enter a tax percentage");
+    document.getElementById("taxper").focus();
+    return;
+  }
+  
+  newform = new FormData();
+  newform.append("obj", "tax_add");
+  newform.append("taxname", taxname);
+  newform.append("taxper", taxper);
+  
+  return fetch("API/car.php", {
+    method: "POST",
+    body: newform,   
+    mode: "cors",
+    credentials: "include"
+  }).then(response => response.json());
+}
+
 
   let data = await loaddata();
 

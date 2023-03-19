@@ -138,7 +138,7 @@ if($admin->check_auth()){
               </div>
               <!-- /Logo -->
               <h4 class="mb-2">Welcome ! 👋</h4>
-              <p class="mb-4">Please sign-in to your account and start the adventure</p>
+              <p class="mb-4">Please sign-in to your account</p>
 
               <form id="login" >
                 <div class="mb-3">
@@ -156,9 +156,9 @@ if($admin->check_auth()){
                 <div class="mb-3 form-password-toggle">
                   <div class="d-flex justify-content-between">
                     <label class="form-label" for="password">Password</label>
-                    <a href="auth-forgot-password-basic.html">
+                    <!-- <a href="auth-forgot-password-basic.html">
                       <small>Forgot Password?</small>
-                    </a>
+                    </a> -->
                   </div>
                   <div class="input-group input-group-merge">
                     <input

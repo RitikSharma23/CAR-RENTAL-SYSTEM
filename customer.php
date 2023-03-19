@@ -506,7 +506,7 @@ require 'check.php';
     });
   });
 
-  async function main() {
+async function main() {
   function loaddata(){
   newform = new FormData();
     newform.append("obj", "displaycust");
@@ -593,6 +593,28 @@ main();
 async function editCustomer() {
   console.log(document.getElementById("id").value)
   function loaddata(){
+    const enameInput = document.getElementById("ename");
+  const eaddressInput = document.getElementById("eaddress");
+  const egstInput = document.getElementById("egst");
+  
+  if (!enameInput.value) {
+    // alert("Name cannot be empty");
+    enameInput.focus();
+    return Promise.reject();
+  }
+  
+  if (!eaddressInput.value) {
+    // alert("Address cannot be empty");
+    eaddressInput.focus();
+    return Promise.reject();
+  }
+  
+  if (!egstInput.value) {
+    // alert("GST cannot be empty");
+    egstInput.focus();
+    return Promise.reject();
+  }
+
   newform = new FormData();
     newform.append("obj", "customer_edit");
     newform.append("id", document.getElementById("id").value);
@@ -626,18 +648,42 @@ document.getElementById("egst").value=""
 async function addCustomer() {
   function loaddata(){
   newform = new FormData();
-    newform.append("obj", "customer_add");
-    newform.append("id", "null");
-    newform.append("name", document.getElementById("name").value);
-    newform.append("address", document.getElementById("address").value);
-    newform.append("gst", document.getElementById("gst").value.toUpperCase());
-    return fetch("API/car.php", {
-      method: "POST",
-      body: newform,   
-      mode: "cors",
-      credentials: "include"
-    }).then(response => response.json());
+  const nameInput = document.getElementById("name");
+  const addressInput = document.getElementById("address");
+  const gstInput = document.getElementById("gst");
+  
+  if (!nameInput.value) {
+    // alert("Name cannot be empty");
+    nameInput.focus();
+    return Promise.reject();
   }
+  
+  if (!addressInput.value) {
+    // alert("Address cannot be empty");
+    addressInput.focus();
+    return Promise.reject();
+  }
+  
+  if (!gstInput.value) {
+    // alert("GST cannot be empty");
+    gstInput.focus();
+    return Promise.reject();
+  }
+  
+  newform.append("obj", "customer_add");
+  newform.append("id", "null");
+  newform.append("name", nameInput.value);
+  newform.append("address", addressInput.value);
+  newform.append("gst", gstInput.value.toUpperCase());
+  
+  return fetch("API/car.php", {
+    method: "POST",
+    body: newform,   
+    mode: "cors",
+    credentials: "include"
+  }).then(response => response.json());
+}
+
 
   let data = await loaddata();
 

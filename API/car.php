@@ -4,14 +4,22 @@ header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-session_set_cookie_params(60*3); // set cookie lifetime to 60 seconds
-ini_set('session.gc_maxlifetime', 60*3); // set session garbage collection lifetime to 60 seconds
-ini_set('session.cookie_lifetime', 60*3);
+session_set_cookie_params(60*15); // set cookie lifetime to 60 seconds
+ini_set('session.gc_maxlifetime', 60*15); // set session garbage collection lifetime to 60 seconds
+ini_set('session.cookie_lifetime', 60*15);
 
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "car";
+
+// $servername = "localhost";
+// $username = "id20438900_car_test";
+// $password = "Ahmedabad@206";
+// $dbname = "id20438900_car";
+
+
+
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
@@ -26,52 +34,44 @@ if(isset($_REQUEST['obj'])){
 }
 
 
-
-
-
-// if(session_status() == PHP_SESSION_NONE) {
   session_start();
-// }
 
 class Login {
   function login($con) {
 
     if(isset($_REQUEST['phone']) && isset($_REQUEST['password'])) {
-      $phone = $_REQUEST['phone'];
-      $password = $_REQUEST['password'];
-      
-      $query = "SELECT * FROM admin WHERE phone='$phone' ";
-      $result = mysqli_query($con, $query);
+      $phone = mysqli_real_escape_string($con, $_REQUEST['phone']);
+      $password = mysqli_real_escape_string($con, $_REQUEST['password']);
+
+      // Use prepared statements to prevent SQL injection
+      $stmt = mysqli_prepare($con, "SELECT name FROM admin WHERE phone=? AND password=?");
+      mysqli_stmt_bind_param($stmt, "ss", $phone, $password);
+      mysqli_stmt_execute($stmt);
+      $result = mysqli_stmt_get_result($stmt);
       
       if(mysqli_num_rows($result) == 1) {
-
-        $query = "SELECT * FROM admin WHERE phone='$phone' and password='$password';";
-        $result = mysqli_query($con, $query);
-
+        $row = mysqli_fetch_assoc($result);
         
-        if(mysqli_num_rows($result) == 1) {
-  
-          $row = mysqli_fetch_assoc($result);
-          $_SESSION['phone'] = $row['phone'];
-          $data = array('name' => $row['name']);
-          $response = array('data' => array($data), 'message' => '1', 'link' => 'home.html');
-          echo json_encode($response);
-
-        } else {
-          echo '{"message":"Wrong Password"}';
-        }
+        // Regenerate the session ID to prevent session hijacking
+        session_regenerate_id();
+        $_SESSION['phone'] = $phone;
         
+        $data = array('name' => $row['name']);
+        $response = array('data' => array($data), 'message' => '1', 'link' => 'home.php');
+        echo json_encode($response);
+
       } else {
-        echo '{"message":"Phone Not Valid"}';
+        echo '{"message":"Wrong Phone Number or Password"}';
       }
-
+        
     } else {
       echo '{"message":"Missing parameters"}';
     }
   }
+  
   function check_auth(){
 
-    if(isset($_SESSION['phone'])) {
+    if(isset($_SESSION['phone']) && isset($_SESSION['name'])) {
       return 1;
     } else {
       return 0;
@@ -80,12 +80,13 @@ class Login {
   }
 
   function sess_destroy() {
+    session_unset();
     session_destroy();
   }
 }
 
 
-// =======================  Customers ==================================
+
   
 class Customer{
     function customer_display($con) {
@@ -115,16 +116,13 @@ class Customer{
   }
   
   function customer_add($con) {
-    // get customer data from API request
     $name = ucwords($_REQUEST['name']);
-    $address = $_REQUEST['address'];
-    $gst = $_REQUEST['gst'];
+    $address = mysqli_real_escape_string($con, $_REQUEST['address']);
+    $gst = mysqli_real_escape_string($con, $_REQUEST['gst']);
     
-    // insert customer data into database
     $query = "INSERT INTO `customer` (`id`, `name`, `address`, `gst`) VALUES (NULL,'$name', '$address', '$gst');";
     $result = mysqli_query($con, $query);
 
-    // check if customer was added successfully
     if($result) {
         $data = array(
             'name' => $name,
@@ -140,17 +138,14 @@ class Customer{
   }
 
   function customer_edit($con) {
-    // get customer data from API request
-    $id = $_REQUEST['id'];
+    $id = mysqli_real_escape_string($con, $_REQUEST['id']);
     $name = ucwords($_REQUEST['name']);
-    $address = $_REQUEST['address'];
-    $gst = $_REQUEST['gst'];
+    $address = mysqli_real_escape_string($con, $_REQUEST['address']);
+    $gst = mysqli_real_escape_string($con, $_REQUEST['gst']);
     
-    // update customer data in database
     $query = "UPDATE `customer` SET `name`='$name', `address`='$address', `gst`='$gst' WHERE `id`='$id'";
     $result = mysqli_query($con, $query);
 
-    // check if customer was updated successfully
     if($result) {
         $data = array(
             'id' => $id,
@@ -167,14 +162,11 @@ class Customer{
   }
 
   function customer_delete($con) {
-    // get customer ID from API request
-    $id = $_REQUEST['id'];
+    $id = mysqli_real_escape_string($con, $_REQUEST['id']);
     
-    // delete customer from database
     $query = "DELETE FROM `customer` WHERE `id`='$id'";
     $result = mysqli_query($con, $query);
 
-    // check if customer was deleted successfully
     if($result) {
         $response = array('message' => 'true');
         echo json_encode($response);
@@ -187,7 +179,6 @@ class Customer{
 }
 
 
-// ====================== Vehicles ====================================
 
 class Vehicle{
   function vehicle_display($con) {
@@ -235,14 +226,14 @@ class Vehicle{
         }
         $vname = ucwords($_REQUEST['vname']);
         $vserial = strtoupper($_REQUEST['vserial']);
-        $local_km_range = $_REQUEST['local_km_range'];
-        $local_km_rate = $_REQUEST['local_km_rate'];
-        $local_ext_km = $_REQUEST['local_ext_km'];
-        $local_ext_hour = $_REQUEST['local_ext_hour'];
-        $out_km_range = $_REQUEST['out_km_range'];
-        $out_km_rate = $_REQUEST['out_km_rate'];
-        $out_ext_km = $_REQUEST['out_ext_km'];
-        $out_ext_hour = $_REQUEST['out_ext_hour'];
+        $local_km_range = mysqli_real_escape_string($con, $_REQUEST['local_km_range']);
+        $local_km_rate = mysqli_real_escape_string($con, $_REQUEST['local_km_rate']);
+        $local_ext_km = mysqli_real_escape_string($con, $_REQUEST['local_ext_km']);
+        $local_ext_hour = mysqli_real_escape_string($con, $_REQUEST['local_ext_hour']);
+        $out_km_range = mysqli_real_escape_string($con, $_REQUEST['out_km_range']);
+        $out_km_rate = mysqli_real_escape_string($con, $_REQUEST['out_km_rate']);
+        $out_ext_km = mysqli_real_escape_string($con, $_REQUEST['out_ext_km']);
+        $out_ext_hour = mysqli_real_escape_string($con, $_REQUEST['out_ext_hour']);
 
         $query = "INSERT INTO `vehicle` (`vnumber`, `vname`, `vserial`, `local_km_range`, `local_km_rate`, `local_ext_km`, `local_ext_hour`, `out_km_range`, `out_km_rate`, `out_ext_km`, `out_ext_hour`) 
                   VALUES ('$vnumber', '$vname', '$vserial', '$local_km_range', '$local_km_rate', '$local_ext_km', '$local_ext_hour', '$out_km_range', '$out_km_rate', '$out_ext_km', '$out_ext_hour')";
@@ -262,19 +253,18 @@ class Vehicle{
   
   function vehicle_edit($con) {
     if(isset($_SESSION['phone'])) {
-        $vname = $_REQUEST['evname'];
-        $vnumber = $_REQUEST['evnumber'];
-        $vserial = $_REQUEST['evserial'];
-        $local_km_range = $_REQUEST['elocal_km_range'];
-        $local_km_rate = $_REQUEST['elocal_km_rate'];
-        $local_ext_km = $_REQUEST['elocal_ext_km'];
-        $local_ext_hour = $_REQUEST['elocal_ext_hour'];
-        $out_km_range = $_REQUEST['eout_km_range'];
-        $out_km_rate = $_REQUEST['eout_km_rate'];
-        $out_ext_km = $_REQUEST['eout_ext_km'];
-        $out_ext_hour = $_REQUEST['eout_ext_hour'];
+        $vname = mysqli_real_escape_string($con, $_REQUEST['evname']);
+        $vnumber = mysqli_real_escape_string($con, $_REQUEST['evnumber']);
+        $vserial = mysqli_real_escape_string($con, $_REQUEST['evserial']);
+        $local_km_range = mysqli_real_escape_string($con, $_REQUEST['elocal_km_range']);
+        $local_km_rate = mysqli_real_escape_string($con, $_REQUEST['elocal_km_rate']);
+        $local_ext_km = mysqli_real_escape_string($con, $_REQUEST['elocal_ext_km']);
+        $local_ext_hour = mysqli_real_escape_string($con, $_REQUEST['elocal_ext_hour']);
+        $out_km_range = mysqli_real_escape_string($con, $_REQUEST['eout_km_range']);
+        $out_km_rate = mysqli_real_escape_string($con, $_REQUEST['eout_km_rate']);
+        $out_ext_km = mysqli_real_escape_string($con, $_REQUEST['eout_ext_km']);
+        $out_ext_hour = mysqli_real_escape_string($con, $_REQUEST['eout_ext_hour']);
 
-        // update vehicle data in database
         $query = "UPDATE `vehicle` SET 
             `vname` = '$vname', 
             `vserial` = '$vserial', 
@@ -289,7 +279,6 @@ class Vehicle{
             WHERE `vnumber` = '$vnumber'";
         $result = mysqli_query($con, $query);
 
-        // return response based on success or failure of update operation
         if($result) {
             $response = array('message' => true);
             echo json_encode($response);
@@ -326,7 +315,6 @@ class Vehicle{
 }
 
 
-// ====================== Taxes ====================================
 
 
 class Taxes{
@@ -361,8 +349,8 @@ class Taxes{
   function tax_add($con) {
     
     if(isset($_SESSION['phone'])) {
-      $taxname = $_REQUEST['taxname'];
-      $taxper = $_REQUEST['taxper'];
+      $taxname = mysqli_real_escape_string($con, $_REQUEST['taxname']);
+      $taxper = mysqli_real_escape_string($con, $_REQUEST['taxper']);
       $query = "INSERT INTO tax (tax_name, tax_percentage) VALUES ('$taxname', '$taxper')";
       $result = mysqli_query($con, $query);
   
@@ -380,9 +368,9 @@ class Taxes{
   function tax_edit($con) {
     
     if(isset($_SESSION['phone'])) {
-      $id = $_REQUEST['id'];
-      $taxname = $_REQUEST['taxname'];
-      $taxper = $_REQUEST['taxper'];
+      $id = mysqli_real_escape_string($con, $_REQUEST['id']);
+      $taxname = mysqli_real_escape_string($con, $_REQUEST['taxname']);
+      $taxper = mysqli_real_escape_string($con, $_REQUEST['taxper']);
       $query = "UPDATE tax SET tax_name='$taxname', tax_percentage='$taxper' WHERE id='$id'";
       $result = mysqli_query($con, $query);
 
@@ -399,7 +387,7 @@ class Taxes{
   function tax_delete($con) {
     
     if(isset($_SESSION['phone'])) {
-      $id = $_REQUEST['id'];
+      $id = mysqli_real_escape_string($con, $_REQUEST['id']);
       $query = "DELETE FROM tax WHERE id='$id'";
       $result = mysqli_query($con, $query);
 
@@ -418,10 +406,195 @@ class Taxes{
 
 }
 
+
+class Invoice{
+
+  function invoice_add($con) {
+    if(isset($_SESSION['phone'])) {
+      if($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        $vseriawel = mysqli_real_escape_string($con, $_REQUEST['ewevserial']);
+        $vserial = mysqli_real_escape_string($con, $_REQUEST['evserial']);
+
+        
+        // Get post data
+        $code = mysqli_real_escape_string($con, $_REQUEST['code']);
+        $date = mysqli_real_escape_string($con, $_REQUEST['date']);
+        $customer = mysqli_real_escape_string($con, $_REQUEST['customer']);
+        $vehicle = mysqli_real_escape_string($con, $_REQUEST['vehicle']);
+        $trip = mysqli_real_escape_string($con, $_REQUEST['trip']);
+        $period_start = mysqli_real_escape_string($con, $_REQUEST['period_start']);
+        $period_end = mysqli_real_escape_string($con, $_REQUEST['period_end']);
+        $visitor_name = mysqli_real_escape_string($con, $_REQUEST['visitor_name']);
+        $km = mysqli_real_escape_string($con, $_REQUEST['km']);
+        $extra_km = mysqli_real_escape_string($con, $_REQUEST['extra_km']);
+        $extra_hour = mysqli_real_escape_string($con, $_REQUEST['extra_hour']);
+        $toll = mysqli_real_escape_string($con, $_REQUEST['toll']);
+        $parking = mysqli_real_escape_string($con, $_REQUEST['parking']);
+        $driver = mysqli_real_escape_string($con, $_REQUEST['driver']);
+        $night_hold = mysqli_real_escape_string($con, $_REQUEST['night_hold']);
+        $border_tax = mysqli_real_escape_string($con, $_REQUEST['border_tax']);
+        $airport = mysqli_real_escape_string($con, $_REQUEST['airport']);
+        $cgst = mysqli_real_escape_string($con, $_REQUEST['cgst']);
+        $sgst = mysqli_real_escape_string($con, $_REQUEST['sgst']);
+        $igst = mysqli_real_escape_string($con, $_REQUEST['igst']);
+        $tax = mysqli_real_escape_string($con, $_REQUEST['tax']);
+        
+        // Insert into invoice table
+        $query = "INSERT INTO invoice (code, date, customer, vehicle, trip, period_start, period_end, visitor_name, km, extra_km, extra_hour, toll, parking, driver, night_hold, border_tax, airport, cgst, sgst, igst, tax) 
+                  VALUES ('$code', '$date', '$customer', '$vehicle', '$trip', '$period_start', '$period_end', '$visitor_name', '$km', '$extra_km', '$extra_hour', '$toll', '$parking', '$driver', '$night_hold', '$border_tax', '$airport', '$cgst', '$sgst', '$igst', '$tax')";
+        $result = mysqli_query($con, $query);
+        
+        if($result) {
+          echo '{"message":true}';
+        } else {
+          echo '{"message":false}';
+        }
+      } else {
+        echo '{"message":"Invalid request method"}';
+      }
+    } else {
+      echo '{"message":"Unauthorized"}';
+    }
+  }
+  
+  function invoice_display($con) {
+    if(isset($_SESSION['phone'])) {
+    
+      $query = "SELECT * FROM invoice";
+      $result = mysqli_query($con, $query);
+      
+      if(mysqli_num_rows($result) >= 1) {
+        $data = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = array(
+                'code' => $row['code'],
+                'date' => $row['date'],
+                'customer' => $row['customer'],
+                'vehicle' => $row['vehicle'],
+                'trip' => $row['trip'],
+                'period_start' => $row['period_start'],
+                'period_end' => $row['period_end'],
+                'visitor_name' => $row['visitor_name'],
+                'km' => $row['km'],
+                'extra_km' => $row['extra_km'],
+                'extra_hour' => $row['extra_hour'],
+                'toll' => $row['toll'],
+                'parking' => $row['parking'],
+                'driver' => $row['driver'],
+                'night_hold' => $row['night_hold'],
+                'border_tax' => $row['border_tax'],
+                'airport' => $row['airport'],
+                'cgst' => $row['cgst'],
+                'sgst' => $row['sgst'],
+                'igst' => $row['igst'],
+                'tax' => $row['tax']
+            );
+        }
+        $response = array('data' => $data, 'message' => true);
+        echo json_encode($response);
+      } else {
+        echo '{"message":false}';
+      }
+    } else {
+      echo '{"message":"Unauthorized"}';
+    }
+  }
+
+  
+  function invoice_edit($con) {
+    if(isset($_SESSION['phone'])) {
+      $code = mysqli_real_escape_string($con, $_REQUEST['code']);
+      $query = "SELECT * FROM invoice WHERE code = '$code'";
+      $result = mysqli_query($con, $query);
+      if(mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+        $id = $row['id'];
+        $date = mysqli_real_escape_string($con, $_REQUEST['date']);
+        $customer = mysqli_real_escape_string($con, $_REQUEST['customer']);
+        $vehicle = mysqli_real_escape_string($con, $_REQUEST['vehicle']);
+        $trip = mysqli_real_escape_string($con, $_REQUEST['trip']);
+        $period_start = mysqli_real_escape_string($con, $_REQUEST['period_start']);
+        $period_end = mysqli_real_escape_string($con, $_REQUEST['period_end']);
+        $visitor_name = mysqli_real_escape_string($con, $_REQUEST['visitor_name']);
+        $km = mysqli_real_escape_string($con, $_REQUEST['km']);
+        $extra_km = mysqli_real_escape_string($con, $_REQUEST['extra_km']);
+        $extra_hour = mysqli_real_escape_string($con, $_REQUEST['extra_hour']);
+        $toll = mysqli_real_escape_string($con, $_REQUEST['toll']);
+        $parking = mysqli_real_escape_string($con, $_REQUEST['parking']);
+        $driver = mysqli_real_escape_string($con, $_REQUEST['driver']);
+        $night_hold = mysqli_real_escape_string($con, $_REQUEST['night_hold']);
+        $border_tax = mysqli_real_escape_string($con, $_REQUEST['border_tax']);
+        $airport = mysqli_real_escape_string($con, $_REQUEST['airport']);
+        $cgst = mysqli_real_escape_string($con, $_REQUEST['cgst']);
+        $sgst = mysqli_real_escape_string($con, $_REQUEST['sgst']);
+        $igst = mysqli_real_escape_string($con, $_REQUEST['igst']);
+        $tax = mysqli_real_escape_string($con, $_REQUEST['tax']);
+        $query = "UPDATE invoice SET 
+                  date = '$date', 
+                  customer = '$customer', 
+                  vehicle = '$vehicle', 
+                  trip = '$trip', 
+                  period_start = '$period_start', 
+                  period_end = '$period_end', 
+                  visitor_name = '$visitor_name', 
+                  km = '$km', 
+                  extra_km = '$extra_km', 
+                  extra_hour = '$extra_hour', 
+                  toll = '$toll', 
+                  parking = '$parking', 
+                  driver = '$driver', 
+                  night_hold = '$night_hold', 
+                  border_tax = '$border_tax', 
+                  airport = '$airport', 
+                  cgst = '$cgst', 
+                  sgst = '$sgst', 
+                  igst = '$igst', 
+                  tax = '$tax' 
+                  WHERE id = $id";
+        if(mysqli_query($con, $query)) {
+          echo '{"message":true}';
+        } else {
+          echo '{"message":false}';
+        }
+      } else {
+        echo '{"message":false}';
+      }
+    } else {
+      echo '{"message":"Unauthorized"}';
+    }
+  }
+
+  function invoice_delete($con) {
+    if(isset($_SESSION['phone'])) {
+      $code = mysqli_real_escape_string($con, $_REQUEST['code']);
+      $query = "SELECT * FROM invoice WHERE code = '$code'";
+      $result = mysqli_query($con, $query);
+      if(mysqli_num_rows($result) == 1) {
+        $row = mysqli_fetch_assoc($result);
+        $id = $row['id'];
+        $query = "DELETE FROM invoice WHERE id = $id";
+        if(mysqli_query($con, $query)) {
+          echo '{"message":true}';
+        } else {
+          echo '{"message":false}';
+        }
+      } else {
+        echo '{"message":false}';
+      }
+    } else {
+      echo '{"message":"Unauthorized"}';
+    }
+  }
+  
+
+}
+
 $admin = new Login();
 $customer = new Customer();
 $vehicle = new Vehicle();
 $taxes = new Taxes();
+$invoice = new Invoice();
 
 switch($choice){
   case 'logout':$admin->sess_destroy();break;
@@ -445,8 +618,6 @@ switch($choice){
   case 'tax_add':$taxes->tax_add($conn);break;
   case 'tax_edit':$taxes->tax_edit($conn);break;
   case 'tax_delete':$taxes->tax_delete($conn);break;
-  
-
 
 }
 
