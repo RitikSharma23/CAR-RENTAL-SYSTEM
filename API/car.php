@@ -411,47 +411,47 @@ class Invoice{
 
   function invoice_add($con) {
     if(isset($_SESSION['phone'])) {
-      if($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-        $vseriawel = mysqli_real_escape_string($con, $_REQUEST['ewevserial']);
-        $vserial = mysqli_real_escape_string($con, $_REQUEST['evserial']);
-
-        
-        // Get post data
-        $code = mysqli_real_escape_string($con, $_REQUEST['code']);
-        $date = mysqli_real_escape_string($con, $_REQUEST['date']);
-        $customer = mysqli_real_escape_string($con, $_REQUEST['customer']);
-        $vehicle = mysqli_real_escape_string($con, $_REQUEST['vehicle']);
-        $trip = mysqli_real_escape_string($con, $_REQUEST['trip']);
-        $period_start = mysqli_real_escape_string($con, $_REQUEST['period_start']);
-        $period_end = mysqli_real_escape_string($con, $_REQUEST['period_end']);
-        $visitor_name = mysqli_real_escape_string($con, $_REQUEST['visitor_name']);
-        $km = mysqli_real_escape_string($con, $_REQUEST['km']);
-        $extra_km = mysqli_real_escape_string($con, $_REQUEST['extra_km']);
-        $extra_hour = mysqli_real_escape_string($con, $_REQUEST['extra_hour']);
-        $toll = mysqli_real_escape_string($con, $_REQUEST['toll']);
-        $parking = mysqli_real_escape_string($con, $_REQUEST['parking']);
-        $driver = mysqli_real_escape_string($con, $_REQUEST['driver']);
-        $night_hold = mysqli_real_escape_string($con, $_REQUEST['night_hold']);
-        $border_tax = mysqli_real_escape_string($con, $_REQUEST['border_tax']);
-        $airport = mysqli_real_escape_string($con, $_REQUEST['airport']);
-        $cgst = mysqli_real_escape_string($con, $_REQUEST['cgst']);
-        $sgst = mysqli_real_escape_string($con, $_REQUEST['sgst']);
-        $igst = mysqli_real_escape_string($con, $_REQUEST['igst']);
-        $tax = mysqli_real_escape_string($con, $_REQUEST['tax']);
-        
+      // Get post data
+      $code = mysqli_real_escape_string($con, $_REQUEST['code']);
+      $date = mysqli_real_escape_string($con, $_REQUEST['date']);
+      $customer = mysqli_real_escape_string($con, $_REQUEST['customer_select']);
+      $vehicle = mysqli_real_escape_string($con, $_REQUEST['vehicle_select']);
+      $trip = mysqli_real_escape_string($con, $_REQUEST['trip']);
+      $period_start = mysqli_real_escape_string($con, $_REQUEST['period_start']);
+      $period_end = mysqli_real_escape_string($con, $_REQUEST['period_end']);
+      $visitor_name = mysqli_real_escape_string($con, $_REQUEST['visitor_name']);
+      $km = mysqli_real_escape_string($con, $_REQUEST['km']);
+      $extra_km = mysqli_real_escape_string($con, $_REQUEST['extra_km']);
+      $extra_hour = mysqli_real_escape_string($con, $_REQUEST['extra_hour']);
+      $toll = mysqli_real_escape_string($con, $_REQUEST['toll']);
+      $parking = mysqli_real_escape_string($con, $_REQUEST['parking']);
+      $driver = mysqli_real_escape_string($con, $_REQUEST['driver']);
+      $night_hold = mysqli_real_escape_string($con, $_REQUEST['night_hold']);
+      $border_tax = mysqli_real_escape_string($con, $_REQUEST['border_tax']);
+      $airport = mysqli_real_escape_string($con, $_REQUEST['airport']);
+      $cgst = mysqli_real_escape_string($con, $_REQUEST['cgst']);
+      $sgst = mysqli_real_escape_string($con, $_REQUEST['gst']);
+      $igst = mysqli_real_escape_string($con, $_REQUEST['igst']);
+      $tax = mysqli_real_escape_string($con, $_REQUEST['tax']);
+      $test = $_REQUEST['test'];
+  
+      // Check if code already exists
+      $check_query = "SELECT code FROM invoice WHERE code='$code'";
+      $check_result = mysqli_query($con, $check_query);
+  
+      if(mysqli_num_rows($check_result) > 0) {
+        echo '{"message":"exists"}';
+      } else {
         // Insert into invoice table
-        $query = "INSERT INTO invoice (code, date, customer, vehicle, trip, period_start, period_end, visitor_name, km, extra_km, extra_hour, toll, parking, driver, night_hold, border_tax, airport, cgst, sgst, igst, tax) 
-                  VALUES ('$code', '$date', '$customer', '$vehicle', '$trip', '$period_start', '$period_end', '$visitor_name', '$km', '$extra_km', '$extra_hour', '$toll', '$parking', '$driver', '$night_hold', '$border_tax', '$airport', '$cgst', '$sgst', '$igst', '$tax')";
+        $query = "INSERT INTO invoice (code, date, customer, vehicle, trip, period_start, period_end, visitor_name, km, extra_km, extra_hour, toll, parking, driver, night_hold, border_tax, airport, cgst, sgst, igst, tax,test) 
+                  VALUES ('$code', '$date', '$customer', '$vehicle', '$trip', '$period_start', '$period_end', '$visitor_name', '$km', '$extra_km', '$extra_hour', '$toll', '$parking', '$driver', '$night_hold', '$border_tax', '$airport', '$cgst', '$sgst', '$igst', '$tax','$test')";
         $result = mysqli_query($con, $query);
-        
+  
         if($result) {
           echo '{"message":true}';
         } else {
           echo '{"message":false}';
         }
-      } else {
-        echo '{"message":"Invalid request method"}';
       }
     } else {
       echo '{"message":"Unauthorized"}';
@@ -461,7 +461,7 @@ class Invoice{
   function invoice_display($con) {
     if(isset($_SESSION['phone'])) {
     
-      $query = "SELECT * FROM invoice";
+      $query = "SELECT * FROM invoice INNER JOIN customer ON customer.name=invoice.customer order by code;";
       $result = mysqli_query($con, $query);
       
       if(mysqli_num_rows($result) >= 1) {
@@ -488,7 +488,12 @@ class Invoice{
                 'cgst' => $row['cgst'],
                 'sgst' => $row['sgst'],
                 'igst' => $row['igst'],
-                'tax' => $row['tax']
+                'tax' => $row['tax'],
+                'test' => $row['test'],
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'address' => $row['address'],
+                'gst' => $row['gst']
             );
         }
         $response = array('data' => $data, 'message' => true);
@@ -572,8 +577,9 @@ class Invoice{
       $result = mysqli_query($con, $query);
       if(mysqli_num_rows($result) == 1) {
         $row = mysqli_fetch_assoc($result);
-        $id = $row['id'];
-        $query = "DELETE FROM invoice WHERE id = $id";
+        $id = $row['code'];
+        $query = "DELETE FROM invoice WHERE code = '$id'";
+
         if(mysqli_query($con, $query)) {
           echo '{"message":true}';
         } else {
@@ -618,6 +624,12 @@ switch($choice){
   case 'tax_add':$taxes->tax_add($conn);break;
   case 'tax_edit':$taxes->tax_edit($conn);break;
   case 'tax_delete':$taxes->tax_delete($conn);break;
+
+
+  case 'invoice_add':$invoice->invoice_add($conn);break;
+  case 'invoice_display':$invoice->invoice_display($conn);break;
+  case 'invoice_delete':$invoice->invoice_delete($conn);break;
+
 
 }
 

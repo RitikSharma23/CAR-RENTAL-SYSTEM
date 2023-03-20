@@ -275,7 +275,6 @@ require 'check.php';
 
                <!-- Fullscreen Modal -->
                <div class="col-lg-4 col-md-6">
-                <small class="text-light fw-semibold">Fullscreen</small>
                 <div class="mt-3">
                   <button
                     type="button"
@@ -283,7 +282,7 @@ require 'check.php';
                     data-bs-toggle="modal"
                     data-bs-target="#fullscreenModal"
                   >
-                    Launch modal
+                    Generate Invoice
                   </button>
 
                   <!-- Modal -->
@@ -291,31 +290,41 @@ require 'check.php';
                     <div class="modal-dialog modal-fullscreen" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="modalFullTitle">Generate Invoice</h5>
+                          <table>
+                            <tr>
+                              <td>
+                          <h5 class="modal-title" id="modalFullTitle">Invoice Number : </h5>
+                              </td>
+                              <td>
+                                <input type="text" name="code" id="code" disabled>
+                              </td>
+                            </tr>
+                          </table>
                           <button
                             type="button"
                             class="btn-close"
                             data-bs-dismiss="modal"
                             aria-label="Close"
+                            id="closebtn"
                           ></button>
                         </div>
                         <div class="modal-body">
                          
                           <div class="row">
                             <div class="col mb-3">
-                              <label for="nameBasic" class="form-label">Invoice Date</label>
-                              <input type="date" id="nameBasic" class="form-control" style="min-width: 200px;"/>
+                              <label for="nameBasic" class="form-label" >Invoice Date</label>
+                              <input type="date" id="date" class="form-control" style="min-width: 200px;"/>
                             </div>
 
                             <div class="col mb-3">
-                              <label for="customer_select" class="form-label">Select Customer</label>
+                              <label for="customer_select" class="form-label" id="customer">Select Customer</label>
                               <select class="form-select" id="customer_select" aria-label="Default select example" style="min-width: 200px;">
                                 <option selected value="0">Select Customer</option>
                               </select>
                             </div>
 
                             <div class="col mb-3">
-                              <label for="vehicle_select" class="form-label">Select Vehicle</label>
+                              <label for="vehicle_select" class="form-label" id="vehicle">Select Vehicle</label>
                               <select class="form-select" id="vehicle_select" aria-label="Default select example" style="min-width: 200px;">
                                 <option selected value="0">Select Vehicle</option>
                               </select>
@@ -326,16 +335,16 @@ require 'check.php';
 
                           <div class="row">
                             <div class="col mb-3">
-                              <label for="nameBasic" class="form-label">Visitor Name</label>
-                              <input type="text" id="nameBasic" class="form-control" placeholder="Visitor Name"style="min-width: 250px;" />
+                              <label for="nameBasic" class="form-label" >Visitor Name</label>
+                              <input type="text" id="visitor_name" class="form-control" placeholder="Visitor Name"style="min-width: 250px;" />
                             </div>
                             <div class="col mb-3">
-                              <label for="nameBasic" class="form-label">Period From</label>
-                              <input type="date" id="nameBasic" class="form-control" />
+                              <label for="nameBasic" class="form-label" >Period From</label>
+                              <input type="date" id="period_start" class="form-control" />
                             </div>
                             <div class="col mb-3">
-                              <label for="nameBasic" class="form-label">To</label>
-                              <input type="date" id="nameBasic" class="form-control" />
+                              <label for="nameBasic" class="form-label" >To</label>
+                              <input type="date" id="period_end" class="form-control" />
                             </div>
                           </div>
 
@@ -346,8 +355,8 @@ require 'check.php';
                               <tr>
                                 <td>
                                   <div class="form-check form-switch mb-2">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Local Trip</label>
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
+                                    <label class="form-check-label" for="trip">Local Trip</label>
+                                    <input class="form-check-input" type="checkbox" id="trip" />
                                   </div>
                                 </td>
                                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -382,10 +391,10 @@ require 'check.php';
                                         <label for="km" class="form-label">Total KM</label>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                            <input type="number" id="km" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;"  />
+                                            <input type="number" id="km" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                            <input type="number" id="kmqty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;"/>
+                                            <input type="number" id="kmqty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
                                         <input type="number" id="kmtotal" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0" disabled />
@@ -397,10 +406,10 @@ require 'check.php';
                                         <label for="extrakm" class="form-label">Extra KM</label>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                            <input type="number" id="extra_km" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                            <input type="number" id="extra_km" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                            <input type="number" id="extra_kmqty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                            <input type="number" id="extra_kmqty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
                                         <input type="number" id="extra_kmtotal" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" disabled value="0"/>
@@ -412,10 +421,10 @@ require 'check.php';
                                         <label for="extra_hour" class="form-label">Extra<br>Hour</label>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="extra_hour" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="extra_hour" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="extra_hour_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="extra_hour_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
                                         <input type="number" id="extra_hour_total" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" disabled value="0" />
@@ -427,10 +436,10 @@ require 'check.php';
                                         <label for="toll" class="form-label">Toll<br>Tax</label>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="toll" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="toll" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="toll_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="toll_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
                                         <input type="number" id="toll_total" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" disabled value="0"/>
@@ -442,10 +451,10 @@ require 'check.php';
                                         <label for="parking" class="form-label">Parking<br>Charges</label>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="parking" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="parking" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="parking_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="parking_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
                                         <input type="number" id="parking_total" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" disabled value="0"/>
@@ -458,10 +467,10 @@ require 'check.php';
                                         <label for="driver" class="form-label">Driver</label>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="driver" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="driver" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="driverqty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="driverqty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
                                         <input type="number" id="drivertotal" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" disabled value="0"/>
@@ -473,10 +482,10 @@ require 'check.php';
                                         <label for="night_hold" class="form-label">Night Hold</label>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="night_hold" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="night_hold" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="night_hold_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="night_hold_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
                                         <input type="number" id="night_hold_total" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" disabled value="0"/>
@@ -490,10 +499,10 @@ require 'check.php';
                                         <label for="border_tax" class="form-label">Border Tax</label>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="border_tax" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="border_tax" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="border_tax_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="border_tax_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
                                         <input type="number" id="border_tax_total" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" disabled value="0"/>
@@ -505,10 +514,10 @@ require 'check.php';
                                         <label for="airport" class="form-label">Airport</label>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="airport" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="airport" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
-                                        <input type="number" id="airport_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" />
+                                        <input type="number" id="airport_qty" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" value="0"/>
                                       </td>
                                       <td style="padding: 5px 10px">
                                         <input type="number" id="airport_total" class="form-control" style="padding-left: 0;padding-right: 0;text-align:center;" disabled value="0"/>
@@ -530,11 +539,11 @@ require 'check.php';
                           <table align="center" >
                             <tr >
                               <td>
-                                GST
+                                SGST
                               </td>
                               <td>
                                 <select class="form-select" id="gst" aria-label="Default select example">
-                                  <option selected value="0">GST Tax</option>
+                                  <option selected value="0">SGST Tax</option>
                                 </select>
                               </td>
                               <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -649,7 +658,7 @@ require 'check.php';
                           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
                             Close
                           </button>
-                          <button type="button" class="btn btn-primary">Save changes</button>
+                          <button type="button" class="btn btn-primary" id="addinvoice">Add Invoice</button>
                         </div>
                       </div>
                     </div>
@@ -669,33 +678,24 @@ require 'check.php';
                 <h5 class="card-header"></h5>
                 <div class="table-responsive text-nowrap" style="min-height: 400px;">
 
-                  <table class="table">
+                  <table class="table" id="mytable>
                     <thead class="table-light">
                       <tr>
-                        <th>Tax Name</th>
-                        <th>Tax Percentage</th>
+                        <th>Invoice ID</th>
+                        <th>Customer Name</th>
+                        <th>GST No</th>
+                        <th>Vehicle Name</th>
+                        <th>Trip</th>
+                        <th>Gross</th>
+                        <th>Tax</th>
+                        <th>Total</th>
                         <th>Action</th>
+                        
                       </tr>
                     </thead>
                     <tbody class="table-border-bottom-0" id="table-body">
                     
-                      <td>GST</td>
-                      <td>10%</td>
-                      <td>
-                        <div class="dropdown">
-                          <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                            <i class="bx bx-dots-vertical-rounded"></i>
-                          </button>
-                          <div class="dropdown-menu">
-                            <a class="dropdown-item" href="javascript:void(0);"
-                              ><i class="bx bx-edit-alt me-1"></i> Edit</a
-                            >
-                            <a class="dropdown-item" href="javascript:void(0);"
-                              ><i class="bx bx-trash me-1"></i> Delete</a
-                            >
-                          </div>
-                        </div>
-                      </td>
+                      
                     </tbody>
                   </table>
 
@@ -761,6 +761,7 @@ require 'check.php';
     <script async defer src="https://buttons.github.io/buttons.js"></script>
  
     <script src="js.js"></script>
+    <script src="invoice.js"></script>
  
  
   </body>
