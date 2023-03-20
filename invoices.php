@@ -155,7 +155,7 @@ require 'check.php';
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item active">
+            <li class="menu-item ">
               <a href="taxes.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-book"></i>
                 <div data-i18n="Analytics">Taxes</div>
@@ -173,7 +173,7 @@ require 'check.php';
 
           <ul class="menu-inner py-1">
             <!-- Dashboard -->
-            <li class="menu-item ">
+            <li class="menu-item active">
               <a href="invoices.php" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-credit-card-front"></i>
                 <div data-i18n="Analytics">Invoices</div>

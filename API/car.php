@@ -4,9 +4,9 @@ header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-session_set_cookie_params(60*15); // set cookie lifetime to 60 seconds
-ini_set('session.gc_maxlifetime', 60*15); // set session garbage collection lifetime to 60 seconds
-ini_set('session.cookie_lifetime', 60*15);
+session_set_cookie_params(60*60); 
+ini_set('session.gc_maxlifetime', 60*60); 
+ini_set('session.cookie_lifetime', 60*60);
 
 $servername = "localhost";
 $username = "root";
