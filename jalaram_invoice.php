@@ -315,7 +315,7 @@ $conn->close();
     <tr style="font-size: 13px;">
         <td>A/C No. :  <?php echo $accno?></td>
         <td></td>
-        <td></td>
+        <td rowspan="3"><img src="http://localhost/CAR/API/uploads/sign.jpeg" height="70px" ></td>
     </tr>
     <tr style="font-size: 13px;">
         <td>Bank :  <?php echo $bank?></td>

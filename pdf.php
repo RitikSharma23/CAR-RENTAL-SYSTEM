@@ -26,6 +26,6 @@ $dompdf->setPaper('A4', 'potrait');
 $dompdf->render(); 
 
 // Output the generated PDF (1 = download and 0 = preview) 
-$dompdf->stream("INVOICE_".$a, array("Attachment" => 0));
+$dompdf->stream("INVOICE_".$a, array("Attachment" => 1));
 
 ?>
