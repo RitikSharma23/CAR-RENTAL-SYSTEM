@@ -71,7 +71,7 @@ async function main() {
   row.appendChild(gstNo);
 
   var vehicleName = document.createElement("td");
-  vehicleName.innerText = i.vehicle;
+  vehicleName.innerText = i.vname;
   row.appendChild(vehicleName);
 
   var trip = document.createElement("td");
@@ -113,9 +113,10 @@ async function main() {
   editLink.href = "javascript:void(0);";
 
   var editIcon = document.createElement("i");
-  editIcon.classList.add("bx", "bx-edit-alt", "me-1");
+  editIcon.classList.add("bx", "bxs-download", "me-1");
   editLink.appendChild(editIcon);
-  editLink.appendChild(document.createTextNode("Edit"));
+  editLink.appendChild(document.createTextNode("Download Invoice"));
+  editLink.href = "pdf.php?a="+i.code;
 
   var deleteLink = document.createElement("a");
   deleteLink.classList.add("dropdown-item");

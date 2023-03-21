@@ -185,7 +185,7 @@ async function vehicle() {
     
     data.data.forEach(vehicle => {
         const optionElement = document.createElement("option");
-        optionElement.value = vehicle.vname.toLowerCase();
+        optionElement.value = vehicle.vnumber;
         optionElement.text = vehicle.vname;
         document.getElementById("vehicle_select").appendChild(optionElement);
     });

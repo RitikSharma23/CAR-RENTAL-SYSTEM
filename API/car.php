@@ -461,7 +461,7 @@ class Invoice{
   function invoice_display($con) {
     if(isset($_SESSION['phone'])) {
     
-      $query = "SELECT * FROM invoice INNER JOIN customer ON customer.name=invoice.customer order by code;";
+      $query = "SELECT customer.*, invoice.*, vehicle.vname FROM customer INNER JOIN invoice ON customer.name = invoice.customer INNER JOIN vehicle ON vehicle.vnumber = invoice.vehicle ORDER BY code;";
       $result = mysqli_query($con, $query);
       
       if(mysqli_num_rows($result) >= 1) {
@@ -493,7 +493,8 @@ class Invoice{
                 'id' => $row['id'],
                 'name' => $row['name'],
                 'address' => $row['address'],
-                'gst' => $row['gst']
+                'gst' => $row['gst'],
+                'vname' => $row['vname']
             );
         }
         $response = array('data' => $data, 'message' => true);
@@ -592,6 +593,39 @@ class Invoice{
       echo '{"message":"Unauthorized"}';
     }
   }
+
+  function invoice_dataAdmin($con) {
+
+      $query = "SELECT * from admin";
+      $result = mysqli_query($con, $query);
+      
+      if(mysqli_num_rows($result) >= 1) {
+        $data = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = array(
+                'name'=>$row['name'],
+                'email'=>$row['email'],
+                'phone'=>$row['phone'],
+                'address1'=>$row['address1'],
+                'address2'=>$row['address2'],
+                'mobile2'=>$row['mobile2'],
+                'gstin'=>$row['gstin'],
+                'accno'=>$row['accno'],
+                'bank'=>$row['bank'],
+                'branch'=>$row['branch'],
+                'ifsc'=>$row['ifsc'],
+            );
+        }
+        $response = array('data' => $data, 'message' => true);
+        echo json_encode($response);
+      } else {
+        echo '{"message":false}';
+      }
+
+  }
+
+
+  
   
 
 }
@@ -629,6 +663,7 @@ switch($choice){
   case 'invoice_add':$invoice->invoice_add($conn);break;
   case 'invoice_display':$invoice->invoice_display($conn);break;
   case 'invoice_delete':$invoice->invoice_delete($conn);break;
+  case 'invoice_dataAdmin':$invoice->invoice_dataAdmin($conn);break;
 
 
 }
