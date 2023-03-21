@@ -283,6 +283,19 @@ require 'check.php';
                         >
                           Add Customers
                         </button>
+                        <button
+                          type="button"
+                          class="btn btn-success"
+                          id="excel"
+                        >
+                          Download Excel
+                        </button>
+
+                        <script>
+                          document.getElementById("excel").addEventListener("click",()=>{
+                            location.href="excel/customer_excel.php"
+                          });
+                        </script>
 
                         <!-- Modal -->
                         <div class="modal fade" id="basicModal" tabindex="-1" aria-hidden="true">

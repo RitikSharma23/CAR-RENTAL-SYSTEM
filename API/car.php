@@ -4,9 +4,10 @@ header("Access-Control-Allow-Credentials: true");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 
-session_set_cookie_params(60*60); 
-ini_set('session.gc_maxlifetime', 60*60); 
-ini_set('session.cookie_lifetime', 60*60);
+$time=60*10;
+session_set_cookie_params($time); 
+ini_set('session.gc_maxlifetime', $time); 
+ini_set('session.cookie_lifetime', $time);
 
 $servername = "localhost";
 $username = "root";
@@ -37,7 +38,8 @@ if(isset($_REQUEST['obj'])){
   session_start();
 
 class Login {
-  function login($con) {
+  function login($con) {session_regenerate_id();
+
 
     if(isset($_REQUEST['phone']) && isset($_REQUEST['password'])) {
       $phone = mysqli_real_escape_string($con, $_REQUEST['phone']);
@@ -83,6 +85,144 @@ class Login {
     session_unset();
     session_destroy();
   }
+
+  function admin_profile_edit($con) {
+
+    if(isset($_SESSION['phone'])) {
+      session_regenerate_id();
+
+      $name=$_REQUEST['name'];
+      $email=$_REQUEST['email'];
+      $phone=$_REQUEST['phone'];
+      $mobile2=$_REQUEST['mobile2'];
+      $gstin=$_REQUEST['gstin'];
+      $address1=$_REQUEST['address1'];
+      $address2=$_REQUEST['address2'];
+      $accno=$_REQUEST['accno'];
+      $bank=$_REQUEST['bname'];
+      $branch=$_REQUEST['brname'];
+      $acc_holder=$_REQUEST['accname'];
+      $ifsc=$_REQUEST['ifsc'];
+      $id=1;
+  
+  
+      $query = "UPDATE admin SET name=?, email=?,acc_holder=?, phone=?, address1=?, address2=?, mobile2=?, gstin=?, accno=?, bank=?, branch=?, ifsc=? WHERE id=?";
+      $stmt = mysqli_prepare($con, $query);
+      mysqli_stmt_bind_param($stmt, "ssssssssssssi", $name, $email,$acc_holder, $phone, $address1, $address2, $mobile2, $gstin, $accno, $bank, $branch, $ifsc, $id);
+      $result = mysqli_stmt_execute($stmt);
+  
+      if($result) {
+        $response = array('message' => true);
+        echo json_encode($response);
+      } else {
+        echo '{"message":false}';
+      }
+    } else {
+      echo '{"message":"timeout"}';
+    }
+  }
+
+  function admin_profile_display($con) {
+
+    if(isset($_SESSION['phone'])) {
+      session_regenerate_id();
+  
+      $query = "SELECT id, name, email, phone, password, address1, address2, mobile2, gstin, accno, bank, branch, ifsc,acc_holder FROM admin";
+      $result = mysqli_query($con, $query);
+  
+      if(mysqli_num_rows($result) >= 1) {
+        $data = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = array(
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'email' => $row['email'],
+                'phone' => $row['phone'],
+                'password' => $row['password'],
+                'address1' => $row['address1'],
+                'address2' => $row['address2'],
+                'mobile2' => $row['mobile2'],
+                'gstin' => $row['gstin'],
+                'accno' => $row['accno'],
+                'bank' => $row['bank'],
+                'branch' => $row['branch'],
+                'ifsc' => $row['ifsc'],
+                'acc_holder' => $row['acc_holder']
+            );
+        }
+        $response = array('data' => $data, 'message' => true);
+        echo json_encode($response);
+      } else {
+        echo '{"message":false}';
+      }
+    } else {
+      echo '{"message":"timeout"}';
+    }
+  }
+
+  function admin_password_change($con) {
+
+    if(isset($_SESSION['phone'])) {
+      session_regenerate_id();
+
+      $pass=$_REQUEST['pass'];
+      $id=1;
+  
+  
+      $query = "UPDATE admin SET password=? WHERE id=?";
+      $stmt = mysqli_prepare($con, $query);
+      mysqli_stmt_bind_param($stmt, "si",$pass, $id);
+      $result = mysqli_stmt_execute($stmt);
+  
+      if($result) {
+        $response = array('message' => true);
+        echo json_encode($response);
+      } else {
+        echo '{"message":false}';
+      }
+    } else {
+      echo '{"message":"timeout"}';
+    }
+  }
+
+  function sign_upload(){
+    if(isset($_FILES['image'])){
+        $errors= array();
+        $file_name = $_FILES['image']['name'];
+        $file_size = $_FILES['image']['size'];
+        $file_tmp = $_FILES['image']['tmp_name'];
+        $file_type = $_FILES['image']['type'];
+        $file_ext=strtolower(end(explode('.',$_FILES['image']['name'])));
+      
+        $extensions= array("jpeg","jpg","png");
+      
+        if(in_array($file_ext,$extensions)=== false){
+            $errors[]="extension not allowed, please choose a JPEG or PNG file.";
+        }
+      
+        if($file_size > 2097152) {
+            $errors[]='File size must be exactly 2 MB';
+        }
+      
+        if(empty($errors)) {
+            $upload_dir = "uploads/";
+            if (!file_exists($upload_dir)) {
+                mkdir($upload_dir, 0777, true); // create the directory if it doesn't exist
+            }
+            $new_file_name = uniqid() . "." . $file_ext; // generate a unique file name
+            $target_file = $upload_dir . $new_file_name; // set the target path for the uploaded file
+            if (move_uploaded_file($file_tmp, $target_file)) {
+                echo "Success";
+            } else {
+                $errors[] = "File upload failed";
+                print_r($errors);
+            }
+        } else {
+            print_r($errors);
+        }
+    }
+}
+
 }
 
 
@@ -90,7 +230,9 @@ class Login {
   
 class Customer{
     function customer_display($con) {
+
       if(isset($_SESSION['phone'])) {
+        session_regenerate_id();
     
         $query = "SELECT id,name,address,gst FROM customer";
         $result = mysqli_query($con, $query);
@@ -111,68 +253,83 @@ class Customer{
           echo '{"message":false}';
         }
       } else {
-        echo '{"message":"Unauthorized"}';
+        echo '{"message":"timeout"}';
       }
   }
   
-  function customer_add($con) {
-    $name = ucwords($_REQUEST['name']);
-    $address = mysqli_real_escape_string($con, $_REQUEST['address']);
-    $gst = mysqli_real_escape_string($con, $_REQUEST['gst']);
-    
-    $query = "INSERT INTO `customer` (`id`, `name`, `address`, `gst`) VALUES (NULL,'$name', '$address', '$gst');";
-    $result = mysqli_query($con, $query);
+  function customer_add($con) {session_regenerate_id();
+    if(isset($_SESSION['phone'])) {
+      $name = ucwords($_REQUEST['name']);
+      $address = mysqli_real_escape_string($con, $_REQUEST['address']);
+      $gst = mysqli_real_escape_string($con, $_REQUEST['gst']);
+      
+      $query = "INSERT INTO `customer` (`id`, `name`, `address`, `gst`) VALUES (NULL,'$name', '$address', '$gst');";
+      $result = mysqli_query($con, $query);
 
-    if($result) {
-        $data = array(
-            'name' => $name,
-            'address' => $address,
-            'gst' => $gst
-        );
-        $response = array('data' => $data, 'message' => 'true');
-        echo json_encode($response);
+      if($result) {
+          $data = array(
+              'name' => $name,
+              'address' => $address,
+              'gst' => $gst
+          );
+          $response = array('data' => $data, 'message' => 'true');
+          echo json_encode($response);
+      } else {
+          $response = array('message' => 'false');
+          echo json_encode($response);
+      }
+    
     } else {
-        $response = array('message' => 'false');
-        echo json_encode($response);
+      echo '{"message":"timeout"}';
     }
   }
 
-  function customer_edit($con) {
-    $id = mysqli_real_escape_string($con, $_REQUEST['id']);
-    $name = ucwords($_REQUEST['name']);
-    $address = mysqli_real_escape_string($con, $_REQUEST['address']);
-    $gst = mysqli_real_escape_string($con, $_REQUEST['gst']);
-    
-    $query = "UPDATE `customer` SET `name`='$name', `address`='$address', `gst`='$gst' WHERE `id`='$id'";
-    $result = mysqli_query($con, $query);
+  function customer_edit($con) {session_regenerate_id();
+    if(isset($_SESSION['phone'])) {
 
-    if($result) {
-        $data = array(
-            'id' => $id,
-            'name' => $name,
-            'address' => $address,
-            'gst' => $gst
-        );
-        $response = array('data' => $data, 'message' => 'true');
-        echo json_encode($response);
+      $id = mysqli_real_escape_string($con, $_REQUEST['id']);
+      $name = ucwords($_REQUEST['name']);
+      $address = mysqli_real_escape_string($con, $_REQUEST['address']);
+      $gst = mysqli_real_escape_string($con, $_REQUEST['gst']);
+      
+      $query = "UPDATE `customer` SET `name`='$name', `address`='$address', `gst`='$gst' WHERE `id`='$id'";
+      $result = mysqli_query($con, $query);
+
+      if($result) {
+          $data = array(
+              'id' => $id,
+              'name' => $name,
+              'address' => $address,
+              'gst' => $gst
+          );
+          $response = array('data' => $data, 'message' => 'true');
+          echo json_encode($response);
+      } else {
+          $response = array('message' => 'false');
+          echo json_encode($response);
+      }
     } else {
-        $response = array('message' => 'false');
-        echo json_encode($response);
+      echo '{"message":"timeout"}';
     }
   }
 
-  function customer_delete($con) {
-    $id = mysqli_real_escape_string($con, $_REQUEST['id']);
-    
-    $query = "DELETE FROM `customer` WHERE `id`='$id'";
-    $result = mysqli_query($con, $query);
+  function customer_delete($con) {session_regenerate_id();
+    if(isset($_SESSION['phone'])) {
 
-    if($result) {
-        $response = array('message' => 'true');
-        echo json_encode($response);
+      $id = mysqli_real_escape_string($con, $_REQUEST['id']);
+      
+      $query = "DELETE FROM `customer` WHERE `id`='$id'";
+      $result = mysqli_query($con, $query);
+
+      if($result) {
+          $response = array('message' => 'true');
+          echo json_encode($response);
+      } else {
+          $response = array('message' => 'false');
+          echo json_encode($response);
+      }
     } else {
-        $response = array('message' => 'false');
-        echo json_encode($response);
+      echo '{"message":"timeout"}';
     }
   }
 
@@ -181,7 +338,8 @@ class Customer{
 
 
 class Vehicle{
-  function vehicle_display($con) {
+  function vehicle_display($con) {session_regenerate_id();
+
     if(isset($_SESSION['phone'])) {
     $query = "SELECT * FROM `vehicle`";
     $result = mysqli_query($con, $query);
@@ -210,12 +368,13 @@ class Vehicle{
         echo json_encode($response);
     }
   } else {
-    echo '{"message": "Unauthorized"}';
+    echo '{"message": "timeout"}';
     }
   }
 
   
-  function vehicle_add($con) {
+  function vehicle_add($con) {session_regenerate_id();
+
     if(isset($_SESSION['phone'])) {
         $vnumber = strtoupper($_REQUEST['vnumber']);
         $query = "SELECT * FROM `vehicle` WHERE `vnumber` = '$vnumber'";
@@ -246,12 +405,13 @@ class Vehicle{
             echo '{"message": "error"}';
         }
     } else {
-        echo '{"message": "Unauthorized"}';
+        echo '{"message": "timeout"}';
     }
   }
 
   
-  function vehicle_edit($con) {
+  function vehicle_edit($con) {session_regenerate_id();
+
     if(isset($_SESSION['phone'])) {
         $vname = mysqli_real_escape_string($con, $_REQUEST['evname']);
         $vnumber = mysqli_real_escape_string($con, $_REQUEST['evnumber']);
@@ -287,12 +447,13 @@ class Vehicle{
             echo json_encode($response);
         }
     } else {
-        echo '{"message":"Unauthorized"}';
+        echo '{"message":"timeout"}';
     }
   }
 
   
-  function vehicle_delete($con) {
+  function vehicle_delete($con) {session_regenerate_id();
+
     if(isset($_SESSION['phone'])) {
         $vnumber = strtoupper($_REQUEST['vnumber']);
         $query = "SELECT * FROM `vehicle` WHERE `vnumber` = '$vnumber'";
@@ -309,7 +470,7 @@ class Vehicle{
             echo '{"message": "Failed to delete vehicle"}';
         }
     } else {
-        echo '{"message": "Unauthorized"}';
+        echo '{"message": "timeout"}';
     }
   }
 }
@@ -319,7 +480,8 @@ class Vehicle{
 
 class Taxes{
 
-  function tax_display($con) {
+  function tax_display($con) {session_regenerate_id();
+
     if(isset($_SESSION['phone'])) {
   
       $query = "SELECT id,tax_name,tax_percentage FROM tax";
@@ -340,13 +502,14 @@ class Taxes{
         echo '{"message":false}';
       }
     } else {
-      echo '{"message":"Unauthorized"}';
+      echo '{"message":"timeout"}';
     }
   }
   
 
 
-  function tax_add($con) {
+  function tax_add($con) {session_regenerate_id();
+
     
     if(isset($_SESSION['phone'])) {
       $taxname = mysqli_real_escape_string($con, $_REQUEST['taxname']);
@@ -360,12 +523,13 @@ class Taxes{
         echo '{"message":false}';
       }
     } else {
-      echo '{"message":"Unauthorized"}';
+      echo '{"message":"timeout"}';
     }
   }
 
 
-  function tax_edit($con) {
+  function tax_edit($con) {session_regenerate_id();
+
     
     if(isset($_SESSION['phone'])) {
       $id = mysqli_real_escape_string($con, $_REQUEST['id']);
@@ -380,11 +544,12 @@ class Taxes{
         echo '{"message":false}';
       }
     } else {
-      echo '{"message":"Unauthorized"}';
+      echo '{"message":"timeout"}';
     }
   }
 
-  function tax_delete($con) {
+  function tax_delete($con) {session_regenerate_id();
+
     
     if(isset($_SESSION['phone'])) {
       $id = mysqli_real_escape_string($con, $_REQUEST['id']);
@@ -398,7 +563,7 @@ class Taxes{
       }
 
     } else {
-      echo '{"message":"Unauthorized"}';
+      echo '{"message":"timeout"}';
     }
   }
 
@@ -409,7 +574,8 @@ class Taxes{
 
 class Invoice{
 
-  function invoice_add($con) {
+  function invoice_add($con) {session_regenerate_id();
+
     if(isset($_SESSION['phone'])) {
       // Get post data
       $code = mysqli_real_escape_string($con, $_REQUEST['code']);
@@ -454,11 +620,12 @@ class Invoice{
         }
       }
     } else {
-      echo '{"message":"Unauthorized"}';
+      echo '{"message":"timeout"}';
     }
   }
   
-  function invoice_display($con) {
+  function invoice_display($con) {session_regenerate_id();
+
     if(isset($_SESSION['phone'])) {
     
       $query = "SELECT customer.*, invoice.*, vehicle.vname FROM customer INNER JOIN invoice ON customer.name = invoice.customer INNER JOIN vehicle ON vehicle.vnumber = invoice.vehicle ORDER BY code;";
@@ -503,12 +670,13 @@ class Invoice{
         echo '{"message":false}';
       }
     } else {
-      echo '{"message":"Unauthorized"}';
+      echo '{"message":"timeout"}';
     }
   }
 
   
-  function invoice_edit($con) {
+  function invoice_edit($con) {session_regenerate_id();
+
     if(isset($_SESSION['phone'])) {
       $code = mysqli_real_escape_string($con, $_REQUEST['code']);
       $query = "SELECT * FROM invoice WHERE code = '$code'";
@@ -567,11 +735,12 @@ class Invoice{
         echo '{"message":false}';
       }
     } else {
-      echo '{"message":"Unauthorized"}';
+      echo '{"message":"timeout"}';
     }
   }
 
-  function invoice_delete($con) {
+  function invoice_delete($con) {session_regenerate_id();
+
     if(isset($_SESSION['phone'])) {
       $code = mysqli_real_escape_string($con, $_REQUEST['code']);
       $query = "SELECT * FROM invoice WHERE code = '$code'";
@@ -590,45 +759,13 @@ class Invoice{
         echo '{"message":false}';
       }
     } else {
-      echo '{"message":"Unauthorized"}';
+      echo '{"message":"timeout"}';
     }
-  }
-
-  function invoice_dataAdmin($con) {
-
-      $query = "SELECT * from admin";
-      $result = mysqli_query($con, $query);
-      
-      if(mysqli_num_rows($result) >= 1) {
-        $data = array();
-        while ($row = mysqli_fetch_assoc($result)) {
-            $data[] = array(
-                'name'=>$row['name'],
-                'email'=>$row['email'],
-                'phone'=>$row['phone'],
-                'address1'=>$row['address1'],
-                'address2'=>$row['address2'],
-                'mobile2'=>$row['mobile2'],
-                'gstin'=>$row['gstin'],
-                'accno'=>$row['accno'],
-                'bank'=>$row['bank'],
-                'branch'=>$row['branch'],
-                'ifsc'=>$row['ifsc'],
-            );
-        }
-        $response = array('data' => $data, 'message' => true);
-        echo json_encode($response);
-      } else {
-        echo '{"message":false}';
-      }
-
-  }
-
-
-  
+  } 
   
 
 }
+
 
 $admin = new Login();
 $customer = new Customer();
@@ -640,6 +777,10 @@ switch($choice){
   case 'logout':$admin->sess_destroy();break;
   case 'check_auth':$admin->check_auth();break;
   case 'login':$admin->login($conn);break;
+  case 'admin_profile_display':$admin->admin_profile_display($conn);break;
+  case 'admin_profile_edit':$admin->admin_profile_edit($conn);break;
+  case 'admin_password_change':$admin->admin_password_change($conn);break;
+  case 'sign_upload':$admin->sign_upload($conn);break;
 
 
   case 'displaycust':$customer->customer_display($conn);break;
@@ -663,7 +804,6 @@ switch($choice){
   case 'invoice_add':$invoice->invoice_add($conn);break;
   case 'invoice_display':$invoice->invoice_display($conn);break;
   case 'invoice_delete':$invoice->invoice_delete($conn);break;
-  case 'invoice_dataAdmin':$invoice->invoice_dataAdmin($conn);break;
 
 
 }

@@ -4,30 +4,30 @@ const calculateTotal = (id1, id2, resultId) => {
     const result = document.getElementById(resultId);
 
     input1.addEventListener('keyup', () => {
-        result.value = Number(input1.value) * Number(input2.value);
+        result.value = (Number(input1.value) * Number(input2.value)).toFixed(2);
     });
     input2.addEventListener('keyup', () => {
-        result.value = Number(input1.value) * Number(input2.value);
+        result.value = (Number(input1.value) * Number(input2.value)).toFixed(2);
     });
 
     input1.addEventListener('keydown', () => {
-        result.value = Number(input1.value) * Number(input2.value);
+        result.value = (Number(input1.value) * Number(input2.value)).toFixed(2);
     });
     input2.addEventListener('keydown', () => {
-        result.value = Number(input1.value) * Number(input2.value);
+        result.value = (Number(input1.value) * Number(input2.value)).toFixed(2);
     });
 
     input1.addEventListener('keypress', () => {
-        result.value = Number(input1.value) * Number(input2.value);
+        result.value = (Number(input1.value) * Number(input2.value)).toFixed(2);
     });
     input2.addEventListener('keypress', () => {
-        result.value = Number(input1.value) * Number(input2.value);
+        result.value = (Number(input1.value) * Number(input2.value)).toFixed(2);
     });
     input1.addEventListener('input', () => {
-        result.value = Number(input1.value) * Number(input2.value);
+        result.value = (Number(input1.value) * Number(input2.value)).toFixed(2);
     });
     input2.addEventListener('input', () => {
-        result.value = Number(input1.value) * Number(input2.value);
+        result.value = (Number(input1.value) * Number(input2.value)).toFixed(2);
     });
 
 };
@@ -87,11 +87,22 @@ function total(){
   
     const selectedValue2 = document.getElementById("cgst").value;
     per2=(total*selectedValue2).toFixed(2)/100
-    document.getElementById("cgst_total").value=per2
+    document.getElementById("cgst_total").value=(per2).toFixed(2)
   
     const selectedValue3 = document.getElementById("igst").value;
     per3=(total*selectedValue3).toFixed(2)/100
-    document.getElementById("igst_total").value=per3
+    document.getElementById("igst_total").value=per3.toFixed(2)
+
+    if(document.getElementById("tax_name").value!="" && document.getElementById("tax_rate").value!=""){
+      const selectedValue4 = document.getElementById("tax_rate").value;
+      per4=(total*selectedValue4).toFixed(2)/100;
+      document.getElementById("total_amount").value=total+per4
+    }
+
+
+    
+
+
 }
 
 
@@ -109,7 +120,7 @@ document.getElementById("gst").addEventListener("change", () => {
   const selectedValue = document.getElementById("gst").value;
   total=calculateTota()
   per=(total*selectedValue).toFixed(2)/100
-  document.getElementById("gst_total").value=per
+  document.getElementById("gst_total").value=per.toFixed(2)
   totaltax=taxtotal();
   document.getElementById("tax_total").value=(totaltax).toFixed(2);  
   document.getElementById("total_amount").value=(total+totaltax).toFixed(2)
@@ -119,7 +130,7 @@ document.getElementById("cgst").addEventListener("change", () => {
   const selectedValue = document.getElementById("cgst").value;
   total=calculateTota()
   per=(total*selectedValue).toFixed(2)/100
-  document.getElementById("cgst_total").value=per
+  document.getElementById("cgst_total").value=per.toFixed(2)
   totaltax=taxtotal();
   document.getElementById("tax_total").value=(totaltax).toFixed(2);  
   document.getElementById("total_amount").value=(total+totaltax).toFixed(2)
@@ -129,11 +140,10 @@ document.getElementById("igst").addEventListener("change", () => {
   const selectedValue = document.getElementById("igst").value;
   total=calculateTota()
   per=(total*selectedValue).toFixed(2)/100
-  document.getElementById("igst_total").value=per
+  document.getElementById("igst_total").value=per.toFixed(2)
   totaltax=taxtotal();
   document.getElementById("tax_total").value=(totaltax).toFixed(2);  
   document.getElementById("total_amount").value=(total+totaltax).toFixed(2)
-
 });
 
 function getvalue(id){
@@ -206,7 +216,7 @@ async function tax() {
     
     data.data.forEach(tax => {
         const optionElement = document.createElement("option");
-        if(tax.tax_name[0]=='G' || tax.tax_name[0]=='g'){
+        if(tax.tax_name[0]=='S' || tax.tax_name[0]=='s'){
         optionElement.value = tax.tax_percentage.toLowerCase();
         optionElement.text = tax.tax_name;
         document.getElementById("gst").appendChild(optionElement);
@@ -284,7 +294,7 @@ async function submit() {
       newform.append('cgst',getvalue('cgst')),
       newform.append( 'gst',getvalue('gst',))
       newform.append( 'igst', getvalue('igst')), 
-      newform.append( 'tax', '0'), 
+      newform.append( 'tax', JSON.stringify(custom_tax)), 
       
       
       inputIds.forEach(id => {
@@ -323,7 +333,38 @@ async function submit() {
     }else   if (vehicleSelect.value == "0") {
       vehicleSelect.focus();
     }else{
-      submit();
+      if(document.getElementById("tax_name").value!="" || document.getElementById("tax_rate").value!=""){
+        
+        
+        if(document.getElementById("tax_name").value==""){
+          document.getElementById("tax_name").focus();
+        }else if(document.getElementById("tax_rate").value==""){
+          document.getElementById("tax_rate").focus();
+
+        }else{
+          if(document.getElementById("tax_name").value!="" && document.getElementById("tax_rate").value!=""){
+              custom_tax={
+                name:document.getElementById("tax_name").value,
+                rate:document.getElementById("tax_rate").value
+              }
+              submit();
+
+          }else{
+              custom_tax={
+                name:false,
+                rate:0
+                }
+          }
+          
+          
+        }
+      }else{
+        custom_tax={
+          name:false,
+          rate:0
+          }
+        submit();
+      }
     }
   });
 

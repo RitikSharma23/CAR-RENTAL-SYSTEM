@@ -4,6 +4,9 @@ ob_start();
 require 'check.php';
 ?>
 
+
+
+
 <!DOCTYPE html>
 
 <html
@@ -263,6 +266,414 @@ require 'check.php';
                   <!-- / Navbar -->
         
                   <!-- Content wrapper -->
+
+                  <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+
+             
+
+                <!-- Pills -->
+
+                <div class="row">
+                 
+  
+                  <div class="col-xl-6" style="width: 100%;">
+                    <div class="nav-align-top mb-4" >
+                      <ul class="nav nav-pills mb-3" role="tablist">
+
+                        <li class="nav-item">
+                          <button
+                            type="button"
+                            class="nav-link active"
+                            role="tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-justified-home"
+                            aria-controls="navs-pills-justified-home"
+                            aria-selected="true"
+                          >
+                            <i class="tf-icons bx bx-home"></i> Home
+                          </button>
+                        </li>
+                        <li class="nav-item">
+                          <button
+                            type="button"
+                            class="nav-link"
+                            role="tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-justified-profile"
+                            aria-controls="navs-pills-justified-profile"
+                            aria-selected="false"
+                          >
+                            <i class="tf-icons bx bx-user"></i> Profile
+                          </button>
+                        </li>
+                        <li class="nav-item">
+                          
+                          <button
+                            type="button"
+                            class="nav-link"
+                            role="tab"
+                            data-bs-toggle="tab"
+                            data-bs-target="#navs-pills-justified-messages"
+                            aria-controls="navs-pills-justified-messages"
+                            aria-selected="false"
+                          >
+                            <i class="tf-icons bx bxs-key"></i> Security
+                          </button>
+                        </li>
+                       
+                      </ul>
+                      <div class="tab-content">
+                        <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
+
+
+                          <div class="row">
+                            <div class="col-md-12" >
+                                                        
+
+                              <!-- Basic List group -->
+                                <div class="col-lg-6 mb-4 mb-xl-0" >
+                                  <div class="demo-inline-spacing mt-3" >
+                                    <div class="list-group" >
+                                      <a href="javascript:void(0);" class="list-group-item list-group-item-action active"
+                                        >Profile Details</a>
+                                      
+                                      <span class="list-group-item list-group-item-action" ><b>Name </b> : <span id="name"> </span></span>
+                                      <span class="list-group-item list-group-item-action" ><b>Mobile1 </b> : <span id="ephone"> </span></span>
+                                      <span class="list-group-item list-group-item-action" ><b>Mobile2 </b> : <span id="emobile2"> </span></span>
+                                      <span class="list-group-item list-group-item-action" ><b>Address Line1 </b> : <span id="eaddress1"> </span></span>
+                                      <span class="list-group-item list-group-item-action" ><b>Address Line2 </b> : <span id="eaddress2"> </span></span>
+                                      <span class="list-group-item list-group-item-action" ><b>Email </b> : <span id="eemail"> </span></span>
+                                      <span class="list-group-item list-group-item-action" ><b>GST NO </b> : <span id="egstin"> </span></span>
+                                    </div>
+                                    
+                                  </div>
+                                  
+                                </div>
+
+
+                                <div class="col-lg-6 mb-4 mb-xl-0" >
+                                  <div class="demo-inline-spacing mt-3">
+                                    <div class="list-group">
+                                      <a href="javascript:void(0);" class="list-group-item list-group-item-action active"
+                                        >Bank Details</a>
+                                      
+                                      <span class="list-group-item list-group-item-action" ><b>Account Holder  Name </b> : <span id="eaccname"> </span></span>
+                                      <span class="list-group-item list-group-item-action" ><b>Account No. </b> : <span id="eaccno"> </span></span>
+                                      <span class="list-group-item list-group-item-action" ><b>Bank Name </b> : <span id="ebname"> </span></span>
+                                      <span class="list-group-item list-group-item-action" ><b>Branch  Name </b> : <span id="ebrname"> </span></span>
+                                      <span class="list-group-item list-group-item-action" ><b>IFSC Code </b> : <span id="eifsc"> </span></span>
+
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                                <!--/ Basic List group -->
+                           
+
+
+                            </div>
+                          </div>
+                          
+
+
+
+
+                        </div>
+                        <div class="tab-pane fade" id="navs-pills-justified-profile" role="tabpanel">
+                         
+<!------------------- ------------------------------------------profile edit------------------------------------------ -->
+
+
+
+                          
+                          <div class="row">
+                            
+                                
+                          
+                          <div class="row">
+                            <div class="col-md-12" >
+                              
+                              <div class="card mb-4">
+                                <h5 class="card-header">Profile Edit</h5>
+                                <!-- Account -->
+                                
+                                <hr class="my-0" />
+                                <div class="card-body">
+                                    <div class="row">
+                                      <div class="mb-3 col-md-6">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input
+                                          class="form-control"
+                                          type="text"
+                                          id="fname"
+                                          name="firstName"
+                                          placeholder="First Name"
+                                          autofocus
+                                        />
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label for="lastName" class="form-label">Last Name</label>
+                                        <input class="form-control" type="text" name="lastName" id="lname" placeholder="Last Name" />
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label for="email" class="form-label">E-mail</label>
+                                        <input
+                                          class="form-control"
+                                          type="email"
+                                          id="email"
+                                          name="email"
+                                          placeholder="Email"
+                                        />
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label for="organization" class="form-label">GSTin No.</label>
+                                        <input
+                                          type="text"
+                                          class="form-control"
+                                          id="gstin"
+                                          name="organization"
+                                          placeholder="GSTin No."
+                                        />
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="phoneNumber">Phone Number : 1</label>
+                                        <div class="input-group input-group-merge">
+                                          <input
+                                            type="number"
+                                            id="phone"
+                                            name="phoneNumber"
+                                            class="form-control"
+                                            placeholder="Mobile1"
+                                          />
+                                        </div>
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label for="address" class="form-label">Phone Number : 2</label>
+                                        <input type="number" class="form-control" id="mobile2" name="address" placeholder="Mobile2" />
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label for="state" class="form-label">Address Line 1</label>
+                                        <input class="form-control" type="text" id="address1" name="state" placeholder="Address Line1" />
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label for="zipCode" class="form-label">Address Line 2</label>
+                                        <input
+                                          type="text"
+                                          class="form-control"
+                                          id="address2"
+                                          name="zipCode"
+                                          placeholder="Address Line 2"
+                                        />
+                                      </div>
+                                      
+                                     
+                                    </div>
+                                    <div class="mt-2">
+                                      <button id="savechange" class="btn btn-primary me-2">Save changes</button>
+                                      <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                                    </div>
+                                </div>
+                                <!-- /Account -->
+                              </div>
+                             
+                            </div>
+                          </div>
+
+                                <!-- /Account -->
+                              
+                          </div>
+
+                        </div>
+
+
+
+<!-- ---------------------------------------------------------------bank ------------------------------------------- -->
+
+                        <div class="tab-pane fade" id="navs-pills-justified-messages" role="tabpanel">
+                          
+
+                            
+                          
+                                <h5 class="card-header">Signature</h5>
+                                <!-- Account -->
+                                
+
+                                <form action="API/upload.php" method="POST" enctype="multipart/form-data">
+                                  <div class="card-body">
+                                    <div class="d-flex align-items-start align-items-sm-center gap-4">
+                                      <img
+                                        src="API/uploads/sign.jpeg"
+                                        alt="user-avatar"
+                                        class="d-block rounded"
+                                        height="100"
+                                        width="100"
+                                        id="uploadedAvatar"
+                                      />
+                                      <div class="button-wrapper">
+                                        <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                                          <span class="d-none d-sm-block">Upload new Image</span>
+                                          <i class="bx bx-upload d-block d-sm-none"></i>
+                                          <input
+                                            type="file"
+                                            id="upload"
+                                            class="account-file-input"
+                                            hidden
+                                            accept="image/png, image/jpeg"
+                                            name="image"
+                                          />
+                                        </label>
+                                        <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                                          <i class="bx bx-reset d-block d-sm-none"></i>
+                                          <span class="d-none d-sm-block">Reset</span>
+                                        </button>
+                                        <button type="submit" class="btn btn-primary mb-4">Submit</button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </form>
+
+
+
+                                <hr class="my-0" />
+                                
+                          
+                          <div class="row">
+                            <div class="col-md-12" >
+                              
+                              <div class="card mb-4">
+                                <h5 class="card-header">Banking Details</h5>
+                                <!-- Account -->
+                                
+                                <hr class="my-0" />
+                                <div class="card-body">
+                                    <div class="row">
+                                      <div class="mb-3 col-md-6">
+                                        <label for="firstName" class="form-label">Account No.</label>
+                                        <input
+                                          class="form-control"
+                                          type="number"
+                                          id="accno"
+                                          name="accno"
+                                          placeholder="Account Number"
+                                          autofocus
+                                        />
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label for="lastName" class="form-label">Bank Name</label>
+                                        <input class="form-control" type="text" name="lastName" id="bname" placeholder="Last Name" />
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label for="email" class="form-label">Account Holder Name</label>
+                                        <input
+                                          class="form-control"
+                                          type="text"
+                                          id="accname"
+                                          name="email"
+                                          placeholder="Account Holder Name"
+                                        />
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label for="organization" class="form-label">Branch Name</label>
+                                        <input
+                                          type="text"
+                                          class="form-control"
+                                          id="brname"
+                                          name="organization"
+                                          placeholder="GSTin No."
+                                        />
+                                      </div>
+                                      <div class="mb-3 col-md-6">
+                                        <label class="form-label" for="phoneNumber">IFSC CODE</label>
+                                        <div class="input-group input-group-merge">
+                                          <input
+                                            type="text"
+                                            id="ifsc"
+                                            name="phoneNumber"
+                                            class="form-control"
+                                            placeholder="IFSC CODE"
+                                          />
+                                        </div>
+                                      </div>
+                                      
+                                      
+                                     
+                                    </div>
+                                    <div class="mt-2">
+                                      <button id="changeprofile" class="btn btn-primary me-2">Save changes</button>
+                                    </div>
+                                </div>
+
+
+                                <h5 class="card-header" style="color: red;">Change Password</h5>
+
+                                <div class="card-body">
+
+                                  <div class="row">
+                                    <div class="mb-3 col-md-6">
+                                      <label for="firstName" class="form-label">New Password</label>
+                                      <input
+                                        class="form-control"
+                                        type="password"
+                                        id="password"
+                                        name="accno"
+                                        placeholder="Account Number"
+                                        value=""
+                                        autofocus
+                                      />
+                                    </div>
+                                    
+                                    <div class="mb-3 col-md-6">
+                                      <label for="email" class="form-label">Confirm Password</label>
+                                      <input
+                                        class="form-control"
+                                        type="password"
+                                        id="cnfpassword"
+                                        name="email"
+                                        placeholder="Confirm Password"
+                                      />
+                                    </div>
+                                    
+                                    
+                                    
+                                   
+                                  </div>
+                                  <div class="mt-2">
+                                    <button id="changepassword" class="btn btn-danger btn-buy-now">Change Password</button>
+                                  </div>
+                              </div>
+                                <!-- /Account -->
+                              </div>
+                             
+                            </div>
+                          </div>
+
+                        </div>
+
+
+                        
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Pills -->
+            </div>
+
+
+
+
+            
+            <!-- / Content -->
+
+            <!-- Footer -->
+
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+          </div>
                 
                   <!-- Content wrapper -->
                 </div>
@@ -312,6 +723,167 @@ require 'check.php';
       }
     });
   });
+
+  async function main() {
+  function loaddata(){
+  newform = new FormData();
+    newform.append("obj", "admin_profile_display");
+    return fetch("API/car.php", {
+      method: "POST",
+      body: newform,   
+      mode: "cors",
+      credentials: "include"
+    }).then(response => response.json());
+  }
+
+  let data = await loaddata();
+
+  name=data.data[0].name
+  c=name.split(" ")
+  
+  document.getElementById("fname").value=c[0];
+  document.getElementById("lname").value=c[1];
+  document.getElementById("email").value=data.data[0].email;
+  document.getElementById("phone").value=data.data[0].phone;
+  document.getElementById("mobile2").value=data.data[0].mobile2;
+  document.getElementById("gstin").value=data.data[0].gstin;
+  document.getElementById("address1").value=data.data[0].address1;
+  document.getElementById("address2").value=data.data[0].address2;
+  document.getElementById("accno").value=data.data[0].accno;
+  document.getElementById("bname").value=data.data[0].bank;
+  document.getElementById("brname").value=data.data[0].branch;
+  document.getElementById("accname").value=data.data[0].acc_holder;
+  document.getElementById("ifsc").value=data.data[0].ifsc;
+
+  document.getElementById("name").innerHTML=c[0]+" "+c[1];
+  document.getElementById("eemail").innerHTML=data.data[0].email;
+  document.getElementById("ephone").innerHTML=data.data[0].phone;
+  document.getElementById("emobile2").innerHTML=data.data[0].mobile2;
+  document.getElementById("egstin").innerHTML=data.data[0].gstin;
+  document.getElementById("eaddress1").innerHTML=data.data[0].address1;
+  document.getElementById("eaddress2").innerHTML=data.data[0].address2;
+  document.getElementById("eaccno").innerHTML=data.data[0].accno;
+  document.getElementById("ebname").innerHTML=data.data[0].bank;
+  document.getElementById("ebrname").innerHTML=data.data[0].branch;
+  document.getElementById("eaccname").innerHTML=data.data[0].acc_holder;
+  document.getElementById("eifsc").innerHTML=data.data[0].ifsc;
+
+
+}
+
+main();
+
+
+
+async function edit() {
+  function loaddata(){
+  newform = new FormData();
+    newform.append("obj", "admin_profile_edit");
+    newform.append("name",   document.getElementById("fname").value+" "+document.getElementById("lname").value);
+    newform.append("email",   document.getElementById("email").value);
+    newform.append("phone",   document.getElementById("phone").value);
+    newform.append("mobile2",   document.getElementById("mobile2").value);
+    newform.append("gstin",   document.getElementById("gstin").value);
+    newform.append("address1",   document.getElementById("address1").value);
+    newform.append("address2",   document.getElementById("address2").value);
+    newform.append("accno",   document.getElementById("accno").value);
+    newform.append("bname",   document.getElementById("bname").value);
+    newform.append("brname",   document.getElementById("brname").value);
+    newform.append("accname",   document.getElementById("accname").value);
+    newform.append("ifsc",   document.getElementById("ifsc").value);
+    return fetch("API/car.php", {
+      method: "POST",
+      body: newform,   
+      mode: "cors",
+      credentials: "include"
+    }).then(response => response.json());
+  }
+  let data = await loaddata();
+
+}
+
+
+async function password_change() {
+  pass=document.getElementById("password").value;
+  cpass=document.getElementById("cnfpassword").value;
+
+  if(pass=="" && cpass==""){
+    alert("Please Enter a valid Password!..")
+  }else if(pass!=cpass){
+    alert("Password Doesnot Match!..")
+  }else{
+
+  function loaddata(){
+  newform = new FormData();
+    newform.append("obj", "admin_password_change");
+    newform.append("pass",document.getElementById("password").value);
+    return fetch("API/car.php", {
+      method: "POST",
+      body: newform,   
+      mode: "cors",
+      credentials: "include"
+    }).then(response => response.json());
+  }
+  let data = await loaddata();
+  if(data.message){
+    alert("Password Has Been Changed Successfully!..")
+    location.reload();
+  }
+
+}
+
+}
+
+document.getElementById("savechange").addEventListener("click", edit)
+document.getElementById("changeprofile").addEventListener("click", edit)
+document.getElementById("changepassword").addEventListener("click", password_change)
+
+
+const form = document.querySelector('form');
+const inputFile = document.querySelector('#upload');
+const uploadedAvatar = document.querySelector('#uploadedAvatar');
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault(); // prevent default form submission behavior
+
+  const xhr = new XMLHttpRequest();
+  const formData = new FormData(); 
+  if(inputFile.files[0]==null){
+    alert("Please Select an Image")
+  }else{
+    const allowedTypes = ['image/jpeg', 'image/png'];
+    const file = inputFile.files[0];
+    if (allowedTypes.indexOf(file.type) === -1) {
+      alert('Only JPG, JPEG, and PNG images are allowed');
+      return;
+    }
+    
+    formData.append('image', file);
+
+    xhr.open('POST', form.action, true);
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          const response = (xhr.responseText);
+          if (response.status === "success") {
+            uploadedAvatar.src = response.url;
+            location.reload();
+          } else {
+            location.reload();
+          }
+        } else {
+          location.reload();
+        }
+      }
+    };
+
+    xhr.send(formData);
+  }
+});
+
+
     </script>
  
  

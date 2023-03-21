@@ -26,6 +26,7 @@ if(mysqli_num_rows($result) >= 1) {
           $bank=$row['bank'];
           $branch=$row['branch'];
           $ifsc=$row['ifsc'];
+          $acc_holder=$row['acc_holder'];
   }
 }
 
@@ -83,8 +84,16 @@ if(mysqli_num_rows($result) >= 1) {
     $tcgst=($total*(json_decode($cgst,true)["rate"]))/100;
     $tsgst=($total*(json_decode($sgst,true)["rate"]))/100;
     $tigst=($total*(json_decode($igst,true)["rate"]))/100;
+    if(json_decode($tax,true)["name"]){$ttax=($total*(json_decode($tax,true)["rate"]))/100;}
 
-    $final=$total+$tcgst+$tsgst+$tigst;
+    if(json_decode($tax,true)["name"]){
+        $ttax=($total*(json_decode($tax,true)["rate"]))/100;
+        $final=$total+$tcgst+$tsgst+$tigst+$ttax;
+    }else{
+        $final=$total+$tcgst+$tsgst+$tigst;
+    }
+    
+
   
     }
   }
@@ -138,7 +147,8 @@ $conn->close();
     </tr>    
 </table>
 
-
+<div style="position:absolute;left:410px;top:340px;border:1px solid;width:85px;height:362px"></div>
+<div style="position:absolute;left:495px;top:340px;border:1px solid;border-left:none;width:85px;height:362px"></div>
 
 <table style="margin-top: 5px; border: 1px solid;width: 100%;border-radius: 5px;font-family: Arial, Helvetica, sans-serif;">
 
@@ -149,7 +159,7 @@ $conn->close();
         <td>Rate </td>
         <td>Amount </td>
     </tr>
-    <hr style="position: absolute;width: 701px;left: -0.3px;">
+    <hr style="position: absolute;width: 701px;left: -0.3px;border: 1px solid">
 
     
     <br>
@@ -244,7 +254,7 @@ $conn->close();
         <td><?php echo json_decode($airport,true)["r"]?></td>
         <td><?php echo json_decode($airport,true)["t"]?></td>
     </tr>
-<hr style="position: absolute;width: 701px;left: -0.3px;">
+<hr style="position: absolute;width: 701px;left: -0.3px;border: 1px solid">
 <br>
     <!-- ================================================= -->
 
@@ -276,13 +286,13 @@ $conn->close();
 
     <tr>
         <td></td>
-        <td colspan="2"><b>Tax </b><?php echo json_decode($igst,true)["rate"]?>%</td>            
-        <td> : <?php echo $tigst?></td>    
+        <td colspan="2"><b> <?php if(json_decode($tax,true)["name"]){echo json_decode($tax,true)["name"];}?></b> <?php if(json_decode($tax,true)["name"]){echo json_decode($tax,true)["rate"]."%";}?></td>            
+        <td><?php if(json_decode($tax,true)["name"]){echo " : ".$ttax;}?></td>    
     </tr>
 
     <tr>
         <td></td>
-        <td colspan="5"><hr></td>            
+        <td colspan="5"><hr style="border: 1px solid"></td>            
         <td></td>    
     </tr>
 
@@ -298,7 +308,7 @@ $conn->close();
 <table style="margin-top: 5px; border: 1px solid;width: 100%;border-radius: 5px;font-family: Arial, Helvetica, sans-serif;">
 
     <tr>
-        <td><B>JALARAM TRAVELS</B></td>
+        <td><B><?php echo strtoupper($acc_holder); ?></B></td>
         <td style="font-size: 10px;">Subject to Ahmedabad Jurisdiction <br> E. & O. E.</td>
         <td><b>For, JALARAM TRAVELS</b></td>
     </tr>

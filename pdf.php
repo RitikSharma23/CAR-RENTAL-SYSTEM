@@ -16,7 +16,7 @@ $dompdf = new Dompdf($options);
 
 $dompdf->set_base_path(basename(__DIR__));
 
-$html = file_get_contents('http://localhost/pdf/jalaram_invoice.php?a='.$a); 
+$html = file_get_contents('http://localhost/car/jalaram_invoice.php?a='.$a); 
 $dompdf->loadHtml($html); 
 
 // (Optional) Setup the paper size and orientation 
@@ -26,6 +26,6 @@ $dompdf->setPaper('A4', 'potrait');
 $dompdf->render(); 
 
 // Output the generated PDF (1 = download and 0 = preview) 
-$dompdf->stream("INVOICE_".$a, array("Attachment" => 1));
+$dompdf->stream("INVOICE_".$a, array("Attachment" => 0));
 
 ?>

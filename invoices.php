@@ -281,9 +281,25 @@ require 'check.php';
                     class="btn btn-primary"
                     data-bs-toggle="modal"
                     data-bs-target="#fullscreenModal"
+                    style="margin-bottom:15px"
                   >
                     Generate Invoice
                   </button>
+                  <button
+                          type="button"
+                          class="btn btn-success"
+                          id="excel"
+                    style="margin-bottom:15px"
+
+                        >
+                          Download Excel
+                        </button>
+
+                        <script>
+                          document.getElementById("excel").addEventListener("click",()=>{
+                            location.href="excel/invoice_excel.php"
+                          });
+                        </script>
 
                   <!-- Modal -->
                   <div class="modal fade" id="fullscreenModal" tabindex="-1" aria-hidden="true">
@@ -592,12 +608,12 @@ require 'check.php';
                                 Tax &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                               </td>
                               <td>
-                                <input type="number" id="tax" class="form-control" placeholder="Tax" />
+                                <input type="text" id="tax_name" class="form-control" placeholder="Tax" />
 
                               </td>
                               <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                               <td>
-                                <input type="number" id="tax" class="form-control" placeholder="Total" value="0"/>
+                                <input type="number" id="tax_rate" class="form-control" placeholder="Total" />
                               </td>
                             </tr>
 
@@ -646,12 +662,7 @@ require 'check.php';
 
                           </table>
 
-                            
-
-
-
-
-
+                          
 
                         </div>
                         <div class="modal-footer">
@@ -762,6 +773,17 @@ require 'check.php';
  
     <script src="js.js"></script>
     <script src="invoice.js"></script>
+    <script>
+            $('#logoutbtn').click(function() {
+    $.ajax({
+      url: 'logout.php', // replace with your PHP page path
+      success: function(response) {
+        $('#included-content').html(response);
+        location.reload();
+      }
+    });
+  });
+    </script>
  
  
   </body>
