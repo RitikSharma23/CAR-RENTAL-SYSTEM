@@ -675,6 +675,127 @@ class Invoice{
   }
 
   
+  
+  function invoice_filter($con) {session_regenerate_id();
+
+    if(isset($_SESSION['phone'])) {
+      $key=$_REQUEST['key'];
+    
+      $query = "SELECT customer.*, invoice.*, vehicle.vname 
+      FROM customer 
+      INNER JOIN invoice ON customer.id = invoice.customer 
+      INNER JOIN vehicle ON vehicle.vnumber = invoice.vehicle 
+      WHERE 
+        UPPER(vehicle.vname) LIKE UPPER('%$key%')
+      OR 	UPPER(customer.name) LIKE UPPER('%$key%')
+      OR 	UPPER(invoice.code) LIKE UPPER('%$key%')
+      OR 	UPPER(customer.gst) LIKE UPPER('%$key%')
+      ORDER BY code;";
+      $result = mysqli_query($con, $query);
+      
+      if(mysqli_num_rows($result) >= 1) {
+        $data = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = array(
+                'code' => $row['code'],
+                'date' => $row['date'],
+                'customer' => $row['customer'],
+                'vehicle' => $row['vehicle'],
+                'trip' => $row['trip'],
+                'period_start' => $row['period_start'],
+                'period_end' => $row['period_end'],
+                'visitor_name' => $row['visitor_name'],
+                'km' => $row['km'],
+                'extra_km' => $row['extra_km'],
+                'extra_hour' => $row['extra_hour'],
+                'toll' => $row['toll'],
+                'parking' => $row['parking'],
+                'driver' => $row['driver'],
+                'night_hold' => $row['night_hold'],
+                'border_tax' => $row['border_tax'],
+                'airport' => $row['airport'],
+                'cgst' => $row['cgst'],
+                'sgst' => $row['sgst'],
+                'igst' => $row['igst'],
+                'tax' => $row['tax'],
+                'test' => $row['test'],
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'address' => $row['address'],
+                'gst' => $row['gst'],
+                'vname' => $row['vname']
+            );
+        }
+        $response = array('data' => $data, 'message' => true);
+        echo json_encode($response);
+      } else {
+        echo '{"message":false}';
+      }
+    } else {
+      echo '{"message":"timeout"}';
+    }
+  }
+  
+  
+  function invoice_datefilter($con) {session_regenerate_id();
+
+    if(isset($_SESSION['phone'])) {
+      $key1=$_REQUEST['date1'];
+      $key2=$_REQUEST['date2'];
+    
+      $query = "SELECT customer.*, invoice.*, vehicle.vname 
+      FROM customer 
+      INNER JOIN invoice ON customer.id = invoice.customer 
+      INNER JOIN vehicle ON vehicle.vnumber = invoice.vehicle 
+      WHERE 
+        invoice.date BETWEEN '$key1' and '$key2'
+      ORDER BY code;";
+      $result = mysqli_query($con, $query);
+      
+      if(mysqli_num_rows($result) >= 1) {
+        $data = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = array(
+                'code' => $row['code'],
+                'date' => $row['date'],
+                'customer' => $row['customer'],
+                'vehicle' => $row['vehicle'],
+                'trip' => $row['trip'],
+                'period_start' => $row['period_start'],
+                'period_end' => $row['period_end'],
+                'visitor_name' => $row['visitor_name'],
+                'km' => $row['km'],
+                'extra_km' => $row['extra_km'],
+                'extra_hour' => $row['extra_hour'],
+                'toll' => $row['toll'],
+                'parking' => $row['parking'],
+                'driver' => $row['driver'],
+                'night_hold' => $row['night_hold'],
+                'border_tax' => $row['border_tax'],
+                'airport' => $row['airport'],
+                'cgst' => $row['cgst'],
+                'sgst' => $row['sgst'],
+                'igst' => $row['igst'],
+                'tax' => $row['tax'],
+                'test' => $row['test'],
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'address' => $row['address'],
+                'gst' => $row['gst'],
+                'vname' => $row['vname']
+            );
+        }
+        $response = array('data' => $data, 'message' => true);
+        echo json_encode($response);
+      } else {
+        echo '{"message":false}';
+      }
+    } else {
+      echo '{"message":"timeout"}';
+    }
+  }
+
+  
   function invoice_edit($con) {session_regenerate_id();
 
     if(isset($_SESSION['phone'])) {
@@ -800,9 +921,10 @@ switch($choice){
   case 'tax_edit':$taxes->tax_edit($conn);break;
   case 'tax_delete':$taxes->tax_delete($conn);break;
 
-
   case 'invoice_add':$invoice->invoice_add($conn);break;
   case 'invoice_display':$invoice->invoice_display($conn);break;
+  case 'invoice_filter':$invoice->invoice_filter($conn);break;
+  case 'invoice_datefilter':$invoice->invoice_datefilter($conn);break;
   case 'invoice_delete':$invoice->invoice_delete($conn);break;
 
 
