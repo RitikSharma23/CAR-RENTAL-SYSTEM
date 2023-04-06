@@ -61,6 +61,7 @@ require 'check.php';
   </head>
 
   <body>
+
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -199,6 +200,20 @@ require 'check.php';
         
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                       <!-- Search -->
+
+                      <div class="navbar-nav align-items-center">
+                        <div class="nav-item d-flex align-items-center">
+                          <input
+                            type="text"
+                            class="form-control border-0 shadow-none"
+                            placeholder="Vehicle Number Or Name...."
+                            aria-label="Search..."
+                            id="searchInputNumber"
+                          />
+                          
+                        </div>
+                      </div>
+
                      
                       <!-- /Search -->
         
@@ -347,11 +362,11 @@ require 'check.php';
 
                                 
                                 <div class="row g-2">
-                                  <div class="col mb-0">
+                                  <div class="col mb-0" style="display:none">
                                     <label for="local_ext_km" class="form-label">Per Extra KM Charge</label>
                                     <input type="number"  id="local_ext_km" class="form-control" placeholder="Per Extra KM Charge" />
                                   </div>
-                                  <div class="col mb-0">
+                                  <div class="col mb-0" style="display:none">
                                     <label for="local_ext_hour" class="form-label">Per Extra Hour Charge</label>
                                     <input type="number"  id="local_ext_hour" class="form-control" placeholder="Per Extra Hour Charge" />
                                   </div>
@@ -363,7 +378,7 @@ require 'check.php';
                                 </div>
 
                                 
-                                <div class="row g-2">
+                                <div class="row g-2" >
                                   <div class="col mb-0">
                                     <label for="out_km_range" class="form-label">KM Range</label>
                                     <input type="number"  id="out_km_range" class="form-control" placeholder="KM Range" />
@@ -374,12 +389,12 @@ require 'check.php';
                                   </div>
                                 </div>
 
-                                <div class="row g-2">
+                                <div class="row g-2" style="display:none">
                                   <div class="col mb-0">
                                     <label for="out_ext_km" class="form-label">Per Extra KM Charge</label>
                                     <input type="number"  id="out_ext_km" class="form-control" placeholder="Per Extra KM Charge" />
                                   </div>
-                                  <div class="col mb-0">
+                                  <div class="col mb-0" style="display:none">
                                     <label for="out_ext_hour" class="form-label">Per Extra Hour Charge</label>
                                     <input type="number"  id="out_ext_hour" class="form-control" placeholder="Per Extra Hour Charge" />
                                   </div>
@@ -486,7 +501,7 @@ require 'check.php';
                                   </div>
                                 </div>
                                 <div class="row g-2">
-                                  <div class="col mb-0">
+                                  <div class="col mb-0" style="display:none">
                                     <label for="evno" class="form-label">Per Extra KM Charge</label>
                                     <input
                                       type="text"
@@ -495,7 +510,7 @@ require 'check.php';
                                       placeholder="KM Charge"
                                     />
                                   </div>
-                                  <div class="col mb-0">
+                                  <div class="col mb-0" style="display:none">
                                     <label for="evsn" class="form-label">Per Extra Hour Charge</label>
                                     <input
                                       type="text"
@@ -534,7 +549,7 @@ require 'check.php';
                                   </div>
                                 </div>
                                 <div class="row g-2">
-                                  <div class="col mb-0">
+                                  <div class="col mb-0" style="display:none">
                                     <label for="evno" class="form-label">Per Extra KM Charge</label>
                                     <input
                                       type="text"
@@ -543,7 +558,7 @@ require 'check.php';
                                       placeholder="KM Charge"
                                     />
                                   </div>
-                                  <div class="col mb-0">
+                                  <div class="col mb-0" style="display:none"> 
                                     <label for="evsn" class="form-label">Per Extra Hour Charge</label>
                                     <input
                                       type="text"
@@ -582,12 +597,12 @@ require 'check.php';
                         <th>Vehicle Serial</th>
                         <th>Local KM <br>Range</th>
                         <th>Local KM <br>Rate</th>
-                        <th>Local Ext. <br>Km C</th>
-                        <th>Local Ext. <br>Hour c</th>
+                        <!-- <th>Local Ext. <br>Km C</th> -->
+                        <!-- <th>Local Ext. <br>Hour c</th> -->
                         <th>Out KM <br> Range</th>
                         <th>Out KM <br> Rate</th>
-                        <th>Out Ext. <br> Km C</th>
-                        <th>Out Ext. <br> Hour C</th>
+                        <!-- <th>Out Ext. <br> Km C</th> -->
+                        <!-- <th>Out Ext. <br> Hour C</th> -->
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -645,6 +660,9 @@ require 'check.php';
 
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+  
  
 
     <script>
@@ -683,12 +701,8 @@ async function addvehicle() {
     "vserial",
     "local_km_range",
     "local_km_rate",
-    "local_ext_km",
-    "local_ext_hour",
     "out_km_range",
     "out_km_rate",
-    "out_ext_km",
-    "out_ext_hour",
   ];
 
   const newform = new FormData();
@@ -794,13 +808,13 @@ const localKmRate = document.createElement("td");
 localKmRate.textContent = data.data[i].local_km_rate;
 row.appendChild(localKmRate);
 
-const localExtKmC = document.createElement("td");
-localExtKmC.textContent = data.data[i].local_ext_km;
-row.appendChild(localExtKmC);
+// const localExtKmC = document.createElement("td");
+// localExtKmC.textContent = data.data[i].local_ext_km;
+// row.appendChild(localExtKmC);
 
-const localExtHourC = document.createElement("td");
-localExtHourC.textContent = data.data[i].local_ext_hour;
-row.appendChild(localExtHourC);
+// const localExtHourC = document.createElement("td");
+// localExtHourC.textContent = data.data[i].local_ext_hour;
+// row.appendChild(localExtHourC);
 
 const outKmRange = document.createElement("td");
 outKmRange.textContent = data.data[i].out_km_range;
@@ -810,13 +824,13 @@ const outKmRate = document.createElement("td");
 outKmRate.textContent = data.data[i].out_km_rate;
 row.appendChild(outKmRate);
 
-const outExtKmC = document.createElement("td");
-outExtKmC.textContent = data.data[i].out_ext_km;
-row.appendChild(outExtKmC);
+// const outExtKmC = document.createElement("td");
+// outExtKmC.textContent = data.data[i].out_ext_km;
+// row.appendChild(outExtKmC);
 
-const outExtHourC = document.createElement("td");
-outExtHourC.textContent = data.data[i].out_ext_hour;
-row.appendChild(outExtHourC);
+// const outExtHourC = document.createElement("td");
+// outExtHourC.textContent = data.data[i].out_ext_hour;
+// row.appendChild(outExtHourC);
 
 const action = document.createElement("td");
 const dropdown = document.createElement("div");
@@ -928,12 +942,8 @@ async function editvehicle() {
     "evserial",
     "elocal_km_range",
     "elocal_km_rate",
-    "elocal_ext_km",
-    "elocal_ext_hour",
     "eout_km_range",
     "eout_km_rate",
-    "eout_ext_km",
-    "eout_ext_hour",
   ];
 
   // create a new FormData object
@@ -986,6 +996,36 @@ async function editvehicle() {
 
 
 document.getElementById("editsave").addEventListener("click", editvehicle);
+
+
+
+
+
+
+var input = document.getElementById("searchInputNumber");
+var tableBody = document.getElementById("table-body");
+
+// Add event listener to input field
+input.addEventListener("keyup", filterTable);
+
+function filterTable() {
+  // Get the input value and convert to uppercase
+  var filter = input.value.toUpperCase();
+
+  // Get all table rows
+  var rows = tableBody.getElementsByTagName("tr");
+
+  // Loop through rows and hide/show based on filter
+  for (var i = 0; i < rows.length; i++) {
+    var vehicleNumber = rows[i].getElementsByTagName("td")[0].innerText.toUpperCase();
+    var vehicleName = rows[i].getElementsByTagName("td")[1].innerText.toUpperCase();
+    if (vehicleNumber.includes(filter) || vehicleName.includes(filter)) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+}
 
 
 

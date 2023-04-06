@@ -351,12 +351,12 @@ class Vehicle{
             'vserial' => strtoupper($row['vserial']),
             'local_km_range' => $row['local_km_range'],
             'local_km_rate' => $row['local_km_rate'],
-            'local_ext_km' => $row['local_ext_km'],
-            'local_ext_hour' => $row['local_ext_hour'],
+            'local_ext_km' => 0,
+            'local_ext_hour' => 0,
             'out_km_range' => $row['out_km_range'],
             'out_km_rate' => $row['out_km_rate'],
-            'out_ext_km' => $row['out_ext_km'],
-            'out_ext_hour' => $row['out_ext_hour']
+            'out_ext_km' => 0,
+            'out_ext_hour' => 0
         );
     }
 
@@ -387,12 +387,12 @@ class Vehicle{
         $vserial = strtoupper($_REQUEST['vserial']);
         $local_km_range = mysqli_real_escape_string($con, $_REQUEST['local_km_range']);
         $local_km_rate = mysqli_real_escape_string($con, $_REQUEST['local_km_rate']);
-        $local_ext_km = mysqli_real_escape_string($con, $_REQUEST['local_ext_km']);
-        $local_ext_hour = mysqli_real_escape_string($con, $_REQUEST['local_ext_hour']);
+        $local_ext_km = mysqli_real_escape_string($con, 0);
+        $local_ext_hour = mysqli_real_escape_string($con, 0);
         $out_km_range = mysqli_real_escape_string($con, $_REQUEST['out_km_range']);
         $out_km_rate = mysqli_real_escape_string($con, $_REQUEST['out_km_rate']);
-        $out_ext_km = mysqli_real_escape_string($con, $_REQUEST['out_ext_km']);
-        $out_ext_hour = mysqli_real_escape_string($con, $_REQUEST['out_ext_hour']);
+        $out_ext_km = mysqli_real_escape_string($con, 0);
+        $out_ext_hour = mysqli_real_escape_string($con, 0);
 
         $query = "INSERT INTO `vehicle` (`vnumber`, `vname`, `vserial`, `local_km_range`, `local_km_rate`, `local_ext_km`, `local_ext_hour`, `out_km_range`, `out_km_rate`, `out_ext_km`, `out_ext_hour`) 
                   VALUES ('$vnumber', '$vname', '$vserial', '$local_km_range', '$local_km_rate', '$local_ext_km', '$local_ext_hour', '$out_km_range', '$out_km_rate', '$out_ext_km', '$out_ext_hour')";
@@ -418,12 +418,12 @@ class Vehicle{
         $vserial = mysqli_real_escape_string($con, $_REQUEST['evserial']);
         $local_km_range = mysqli_real_escape_string($con, $_REQUEST['elocal_km_range']);
         $local_km_rate = mysqli_real_escape_string($con, $_REQUEST['elocal_km_rate']);
-        $local_ext_km = mysqli_real_escape_string($con, $_REQUEST['elocal_ext_km']);
-        $local_ext_hour = mysqli_real_escape_string($con, $_REQUEST['elocal_ext_hour']);
+        $local_ext_km = mysqli_real_escape_string($con, 0);
+        $local_ext_hour = mysqli_real_escape_string($con, 0);
         $out_km_range = mysqli_real_escape_string($con, $_REQUEST['eout_km_range']);
         $out_km_rate = mysqli_real_escape_string($con, $_REQUEST['eout_km_rate']);
-        $out_ext_km = mysqli_real_escape_string($con, $_REQUEST['eout_ext_km']);
-        $out_ext_hour = mysqli_real_escape_string($con, $_REQUEST['eout_ext_hour']);
+        $out_ext_km = mysqli_real_escape_string($con, 0);
+        $out_ext_hour = mysqli_real_escape_string($con, 0);
 
         $query = "UPDATE `vehicle` SET 
             `vname` = '$vname', 
@@ -628,7 +628,7 @@ class Invoice{
 
     if(isset($_SESSION['phone'])) {
     
-      $query = "SELECT customer.*, invoice.*, vehicle.vname FROM customer INNER JOIN invoice ON customer.name = invoice.customer INNER JOIN vehicle ON vehicle.vnumber = invoice.vehicle ORDER BY code;";
+      $query = "SELECT customer.*, invoice.*, vehicle.vname FROM customer INNER JOIN invoice ON customer.id = invoice.customer INNER JOIN vehicle ON vehicle.vnumber = invoice.vehicle ORDER BY code;";
       $result = mysqli_query($con, $query);
       
       if(mysqli_num_rows($result) >= 1) {

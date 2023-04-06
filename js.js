@@ -33,6 +33,7 @@ const calculateTotal = (id1, id2, resultId) => {
 };
 
 
+
 function all(){
 calculateTotal('kmqty', 'km', 'kmtotal');
 calculateTotal('extra_kmqty', 'extra_km', 'extra_kmtotal');
@@ -45,7 +46,10 @@ calculateTotal('border_tax', 'border_tax_qty', 'border_tax_total');
 calculateTotal('airport', 'airport_qty', 'airport_total');
 }
 
+
+
 all();
+
 
 const ids = ["kmtotal","extra_kmtotal","extra_hour_total","toll_total","parking_total","drivertotal","night_hold_total","border_tax_total","airport_total"];
 const taxid = ["gst_total","cgst_total","igst_total"];
@@ -99,11 +103,55 @@ function total(){
       document.getElementById("total_amount").value=total+per4
     }
 
-
-    
-
-
 }
+
+
+
+const calculateTotal2 = (id1, id2, resultId) => {
+  const input1 = document.getElementById(id1);
+  const input2 = document.getElementById(id2);
+  const result = document.getElementById(resultId);
+
+  total=calculateTota();
+  totaltax=taxtotal();
+  document.getElementById("tax_total").value=totaltax;
+  
+  document.getElementById("gross").value=total;
+
+  const selectedValue = document.getElementById("gst").value;
+  per=(total*selectedValue).toFixed(2)/100
+  document.getElementById("gst_total").value=per
+  document.getElementById("total_amount").value=total+totaltax
+
+
+  const selectedValue2 = document.getElementById("cgst").value;
+  per2=(total*selectedValue2).toFixed(2)/100
+  document.getElementById("cgst_total").value=(per2).toFixed(2)
+
+  const selectedValue3 = document.getElementById("igst").value;
+  per3=(total*selectedValue3).toFixed(2)/100
+  document.getElementById("igst_total").value=per3.toFixed(2)
+
+  if(document.getElementById("tax_name").value!="" && document.getElementById("tax_rate").value!=""){
+    const selectedValue4 = document.getElementById("tax_rate").value;
+    per4=(total*selectedValue4).toFixed(2)/100;
+    document.getElementById("total_amount").value=total+per4
+  }
+
+      result.value = (Number(input1.value) * Number(input2.value)).toFixed(2);
+};
+
+function allcheck(){
+  calculateTotal2('kmqty', 'km', 'kmtotal');
+  calculateTotal2('extra_kmqty', 'extra_km', 'extra_kmtotal');
+  calculateTotal2('extra_hour', 'extra_hour_qty', 'extra_hour_total');
+  calculateTotal2('toll', 'toll_qty', 'toll_total');
+  calculateTotal2('parking', 'parking_qty', 'parking_total');
+  calculateTotal2('driver', 'driverqty', 'drivertotal');
+  calculateTotal2('night_hold', 'night_hold_qty', 'night_hold_total');
+  calculateTotal2('border_tax', 'border_tax_qty', 'border_tax_total');
+  calculateTotal2('airport', 'airport_qty', 'airport_total');
+  }
 
 
 const numberInputs = document.querySelectorAll('input[type="number"]');
@@ -173,7 +221,7 @@ async function customer() {
     
     data.data.forEach(customer => {
         const optionElement = document.createElement("option");
-        optionElement.value = customer.name.toLowerCase();
+        optionElement.value = customer.id;
         optionElement.text = customer.name;
         document.getElementById("customer_select").appendChild(optionElement);
     });
@@ -199,7 +247,56 @@ async function vehicle() {
         optionElement.text = vehicle.vname;
         document.getElementById("vehicle_select").appendChild(optionElement);
     });
+
+    document.getElementById("vehicle_select").addEventListener("change",()=>{
+      data.data.forEach(v => {
+        if(document.getElementById("trip").checked){
+          data.data.forEach(v => {
+            if(v.vnumber==document.getElementById("vehicle_select").value){
+              document.getElementById("kmqty").value=v.local_km_rate;
+              allcheck();
+
+
+            }
+          });
+      }else{
+        data.data.forEach(v => {
+          if(v.vnumber==document.getElementById("vehicle_select").value){
+            document.getElementById("kmqty").value=v.out_km_rate;
+            allcheck();
+
+          }
+        });
+       
+      }
+    });
+
+    })
+
+    document.getElementById("trip").addEventListener("change",()=>{
+      if(document.getElementById("trip").checked){
+          data.data.forEach(v => {
+            if(v.vnumber==document.getElementById("vehicle_select").value){
+              document.getElementById("kmqty").value=v.local_km_rate;
+              allcheck();
+            }
+          });
+      }else{
+        data.data.forEach(v => {
+          if(v.vnumber==document.getElementById("vehicle_select").value){
+            
+            document.getElementById("kmqty").value=v.out_km_rate;
+            allcheck();
+
+          }
+        });
+       
+      }
+    });
+
+
 }
+
 
 async function tax() {
     function loaddata() {
@@ -367,6 +464,7 @@ async function submit() {
       }
     }
   });
+
 
 
 

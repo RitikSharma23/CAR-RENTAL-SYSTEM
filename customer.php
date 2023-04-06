@@ -198,6 +198,19 @@ require 'check.php';
         
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                       <!-- Search -->
+
+                      <div class="navbar-nav align-items-center">
+                        <div class="nav-item d-flex align-items-center">
+                          <input
+                            type="text"
+                            class="form-control border-0 shadow-none"
+                            placeholder="Customer Name Or GST"
+                            aria-label="Search..."
+                            id="searchInputNumber"
+                          />
+                          
+                        </div>
+                      </div>
                      
                       <!-- /Search -->
         
@@ -616,11 +629,7 @@ async function editCustomer() {
     return Promise.reject();
   }
   
-  if (!egstInput.value) {
-    // alert("GST cannot be empty");
-    egstInput.focus();
-    return Promise.reject();
-  }
+
 
   newform = new FormData();
     newform.append("obj", "customer_edit");
@@ -671,11 +680,7 @@ async function addCustomer() {
     return Promise.reject();
   }
   
-  if (!gstInput.value) {
-    // alert("GST cannot be empty");
-    gstInput.focus();
-    return Promise.reject();
-  }
+
   
   newform.append("obj", "customer_add");
   newform.append("id", "null");
@@ -735,6 +740,30 @@ document.getElementById("add").addEventListener("click", addCustomer);
 
 
 
+var input = document.getElementById("searchInputNumber");
+var tableBody = document.getElementById("table-body");
+
+// Add event listener to input field
+input.addEventListener("keyup", filterTable);
+
+function filterTable() {
+  // Get the input value and convert to uppercase
+  var filter = input.value.toUpperCase();
+
+  // Get all table rows
+  var rows = tableBody.getElementsByTagName("tr");
+
+  // Loop through rows and hide/show based on filter
+  for (var i = 0; i < rows.length; i++) {
+    var vehicleNumber = rows[i].getElementsByTagName("td")[0].innerText.toUpperCase();
+    var vehicleName = rows[i].getElementsByTagName("td")[1].innerText.toUpperCase();
+    if (vehicleNumber.includes(filter) || vehicleName.includes(filter)) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+}
 
 
     </script>

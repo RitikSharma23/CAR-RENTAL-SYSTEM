@@ -198,6 +198,20 @@ require 'check.php';
         
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                       <!-- Search -->
+
+
+                      <div class="navbar-nav align-items-center">
+                        <div class="nav-item d-flex align-items-center">
+                          <input
+                            type="text"
+                            class="form-control border-0 shadow-none"
+                            placeholder="Search In Tax..."
+                            aria-label="Search..."
+                            id="searchInputNumber"
+                          />
+                          
+                        </div>
+                      </div>
                      
                       <!-- /Search -->
         
@@ -703,6 +717,32 @@ document.getElementById("savetaxbtn").addEventListener("click", edittax);
 document.getElementById("addtaxbtn").addEventListener("click", addtax);
 
 
+
+
+var input = document.getElementById("searchInputNumber");
+var tableBody = document.getElementById("table-body");
+
+// Add event listener to input field
+input.addEventListener("keyup", filterTable);
+
+function filterTable() {
+  // Get the input value and convert to uppercase
+  var filter = input.value.toUpperCase();
+
+  // Get all table rows
+  var rows = tableBody.getElementsByTagName("tr");
+
+  // Loop through rows and hide/show based on filter
+  for (var i = 0; i < rows.length; i++) {
+    var vehicleNumber = rows[i].getElementsByTagName("td")[0].innerText.toUpperCase();
+    var vehicleName = rows[i].getElementsByTagName("td")[1].innerText.toUpperCase();
+    if (vehicleNumber.includes(filter) || vehicleName.includes(filter)) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+}
 
 
 

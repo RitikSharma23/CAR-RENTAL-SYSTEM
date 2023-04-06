@@ -23,7 +23,9 @@ parseFloat(JSON.parse(n.igst).rate)
 return (total*totalgross(n))/100
 }
 function totalamt(n){
-  return totalgross(n)+((total*totalgross(n))/100);
+  x1=(totalgross(n))
+  x2=(totaltax(n))
+  return (x1+x2);
 }
 
 
@@ -63,7 +65,7 @@ async function main() {
   row.appendChild(invoiceId);
 
   var customerName = document.createElement("td");
-  customerName.innerText = i.customer;
+  customerName.innerText = i.name;
   row.appendChild(customerName);
 
   var gstNo = document.createElement("td");
@@ -118,6 +120,16 @@ async function main() {
   editLink.appendChild(document.createTextNode("Download Invoice"));
   editLink.href = "pdf.php?a="+i.code;
 
+  var preLink = document.createElement("a");
+  preLink.classList.add("dropdown-item");
+  preLink.href = "javascript:void(0);";
+
+  var preIcon = document.createElement("i");
+  preIcon.classList.add("bx", "bxs-spreadsheet", "me-1");
+  preLink.appendChild(preIcon);
+  preLink.appendChild(document.createTextNode("View Invoice"));
+  preLink.href = "pdfpre.php?a="+i.code;
+
   var deleteLink = document.createElement("a");
   deleteLink.classList.add("dropdown-item");
   deleteLink.href = "javascript:void(0);";
@@ -132,6 +144,7 @@ async function main() {
   });
 
   dropdownMenu.appendChild(editLink);
+  dropdownMenu.appendChild(preLink);
   dropdownMenu.appendChild(deleteLink);
   dropdown.appendChild(dropdownMenu);
 
@@ -171,6 +184,11 @@ async function deletetax(id) {
     alert("Something Went Wrong! \n Please Try Again Later");
   }
 }
+
+
+
+
+
 
 
 

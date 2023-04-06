@@ -1,4 +1,9 @@
 <?php
+// $servername = "localhost";
+// $username = "id20438900_car_test";
+// $password = "Ahmedabad@206";
+// $dbname = "id20438900_car";
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -30,7 +35,7 @@ if(mysqli_num_rows($result) >= 1) {
   }
 }
 
-$query = "SELECT customer.*, invoice.*, vehicle.vname FROM customer INNER JOIN invoice ON customer.name =
+$query = "SELECT customer.*, invoice.*, vehicle.vname FROM customer INNER JOIN invoice ON customer.id =
 invoice.customer INNER JOIN vehicle ON vehicle.vnumber = invoice.vehicle where
 invoice.code='$a';";
 // echo $query;
@@ -109,7 +114,7 @@ $conn->close();
 <table  style="border: 1px solid;width: 100%;border-radius: 5px;font-family: Arial, Helvetica, sans-serif;background-color: #008fd3;color: white;">
     <tr>
         <td class="logo" style="background-color: #008fd3;">
-            <center><img src="http://localhost/pdf/jalaram_logo.jpg"  height="180px"  style="margin: 10px;border: none;"></center>
+            <center><img src="https://unextenuated-membra.000webhostapp.com/jalaram_logo.jpg"  height="180px"  style="margin: 10px;border: none;"></center>
         </td>
         <td style="padding-left: 40px;">
             <h1 style="margin-left: 20px;color: white;" >JALARAM TRAVELS</h1>
@@ -128,7 +133,7 @@ $conn->close();
     <tr>
         <td>
            <center>
-            <span style="font-size: 20px;">All Type of A.C. & Non A.C. Luxurious Car Available on Hire </span>
+            <span style="font-size: 20px;">All Type of A.C. & Luxurious Car Available on Hire </span>
            </center> 
         </td>
     </tr>
@@ -137,7 +142,7 @@ $conn->close();
 <table  style="margin-top: 5px;width: 100%;border-radius: 5px;font-family: Arial, Helvetica, sans-serif;">
     <tr >
         <td style="border: 1px solid;border-radius: 5px;width: 60%;">
-            <span>M/s <?php echo ucwords($customer)?></span><br><br>
+            <span>M/s <?php echo ucwords($name)?></span><br><br>
             <span>GST No : <?php echo $gst?></span>
         </td>
         <td style="border: 1px solid;border-radius: 5px;padding: 10px;">
@@ -147,8 +152,10 @@ $conn->close();
     </tr>    
 </table>
 
-<div style="position:absolute;left:410px;top:340px;border:1px solid;width:85px;height:362px"></div>
-<div style="position:absolute;left:495px;top:340px;border:1px solid;border-left:none;width:85px;height:362px"></div>
+
+<div style="position:absolute;left:410px;top:340px;border:1px solid;width:85px;height:315px"></div>
+<div style="position:absolute;left:495px;top:340px;border:1px solid;border-left:none;width:85px;height:315px"></div>
+
 
 <table style="margin-top: 5px; border: 1px solid;width: 100%;border-radius: 5px;font-family: Arial, Helvetica, sans-serif;">
 
@@ -179,7 +186,7 @@ $conn->close();
     </tr>
 
     <tr>
-        <td>Period from : <b><?php echo $period_start?></b> To : <b><?php echo $period_end?></b></td>
+        <td>Period from : <b><?php echo date("d/m/Y", strtotime($period_start))?></b> To : <b><?php echo date("d/m/Y", strtotime($period_end))?></b></td>
         <td></td>       
         <td></td>       
         <td></td>       
@@ -199,14 +206,14 @@ $conn->close();
         <td><?php echo json_decode($km,true)["t"]?></td>
     </tr>
 
-    <tr>
+    <tr style="display:none">
         <td>Total Extra Km</td>
         <td><?php echo json_decode($extra_km,true)["q"]?></td>
         <td><?php echo json_decode($extra_km,true)["r"]?></td>
         <td><?php echo json_decode($extra_km,true)["t"]?></td>
     </tr>
 
-    <tr>
+    <tr style="display:none">
         <td>Total Extra Hours</td>
         <td><?php echo json_decode($extra_hour,true)["q"]?></td>
         <td><?php echo json_decode($extra_hour,true)["r"]?></td>
@@ -273,25 +280,25 @@ $conn->close();
     </tr>
 
     <tr>
-        <td></td>
+        <td>Tax : GST 5% (RCM Payable By Customer)</td>
         <td colspan="2"><b>SGST  </b><?php echo json_decode($sgst,true)["rate"]?>%</td>            
         <td> : <?php echo $tsgst?></td>      
     </tr>
 
     <tr>
-        <td></td>
+        <td>Taxable Value <?php echo $total?></td>
         <td colspan="2"><b>IGST </b><?php echo json_decode($igst,true)["rate"]?>%</td>            
         <td> : <?php echo $tigst?></td>        
     </tr>
 
     <tr>
-        <td></td>
+        <td>CGST @ <?php echo json_decode($cgst,true)["rate"]?>% <?php echo $tcgst?></td>
         <td colspan="2"><b> <?php if(json_decode($tax,true)["name"]){echo json_decode($tax,true)["name"];}?></b> <?php if(json_decode($tax,true)["name"]){echo json_decode($tax,true)["rate"]."%";}?></td>            
         <td><?php if(json_decode($tax,true)["name"]){echo " : ".$ttax;}?></td>    
     </tr>
 
     <tr>
-        <td></td>
+        <td>SGST @ <?php echo json_decode($sgst,true)["rate"]?>% <?php echo $tsgst?></td>
         <td colspan="5"><hr style="border: 1px solid"></td>            
         <td></td>    
     </tr>
@@ -315,7 +322,7 @@ $conn->close();
     <tr style="font-size: 13px;">
         <td>A/C No. :  <?php echo $accno?></td>
         <td></td>
-        <td rowspan="3"><img src="http://localhost/CAR/API/uploads/sign.jpeg" height="70px" ></td>
+        <td rowspan="3"><img src="https://unextenuated-membra.000webhostapp.com/API/uploads/sign.jpeg" height="70px" ></td>
     </tr>
     <tr style="font-size: 13px;">
         <td>Bank :  <?php echo $bank?></td>

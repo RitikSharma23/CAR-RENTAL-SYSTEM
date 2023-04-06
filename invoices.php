@@ -198,6 +198,19 @@ require 'check.php';
         
                     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
                       <!-- Search -->
+
+                      <div class="navbar-nav align-items-center">
+                        <div class="nav-item d-flex align-items-center">
+                          <input
+                            type="text"
+                            class="form-control border-0 shadow-none"
+                            placeholder="Search In Invoices..."
+                            aria-label="Search..."
+                            id="searchInputNumber"
+                          />
+                          
+                        </div>
+                      </div>
                      
                       <!-- /Search -->
         
@@ -260,7 +273,8 @@ require 'check.php';
 
                   <div class="content-wrapper">
             <!-- Content -->
-
+            <div class="navbar-nav align-items-center">
+                        
             <div class="container-xxl flex-grow-1 container-p-y">
 
               <!-- Bootstrap modals -->
@@ -270,22 +284,20 @@ require 'check.php';
                <!-- Fullscreen Modal -->
                <div class="col-lg-4 col-md-6">
                 <div class="mt-3">
-                  <button
-                    type="button"
-                    class="btn btn-primary"
-                    data-bs-toggle="modal"
-                    data-bs-target="#fullscreenModal"
-                    style="margin-bottom:15px"
-                  >
-                    Generate Invoice
-                  </button>
-                  <button
+                      <button
+                        type="button"
+                        class="btn btn-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#fullscreenModal"
+                        style="margin-bottom:15px"
+                      >
+                        Generate Invoice
+                      </button>
+                        <button
                           type="button"
                           class="btn btn-success"
                           id="excel"
-                    style="margin-bottom:15px"
-
-                        >
+                          style="margin-bottom:15px">
                           Download Excel
                         </button>
 
@@ -383,9 +395,11 @@ require 'check.php';
 
                           <!-- Basic Bootstrap Table -->
                             <div class="card">
-                              <!-- <h5 class="card-header">Table Basic</h5> -->
+                             
                               <div class="table-responsive text-nowrap">
+                                
                                 <table class="table">
+                                  
                                   <thead>
                                     <tr style="background-color: rgb(247, 247, 247);">
                                       <th>&nbsp;&nbsp;&nbsp;&nbsp;</th>
@@ -411,7 +425,7 @@ require 'check.php';
                                       </td>
                                     </tr>
                                   
-                                    <tr>
+                                    <tr style="display:none">
                                       <td style="padding: 5px 10px">
                                         <label for="extrakm" class="form-label">Extra KM</label>
                                       </td>
@@ -426,7 +440,7 @@ require 'check.php';
                                       </td>
                                     </tr>
                                   
-                                    <tr>
+                                    <tr style="display:none">
                                       <td style="padding: 5px 10px">
                                         <label for="extra_hour" class="form-label">Extra<br>Hour</label>
                                       </td>
@@ -679,9 +693,40 @@ require 'check.php';
               <!--/ Bootstrap modals -->
 
                <!-- Bootstrap Table with Header - Light -->
-               <div class="card" >
-                <h5 class="card-header"></h5>
+                    <div class="card" >
+                    <div class="nav-item d-flex align-items-center">
+                            <input
+                            type="date"
+                            class="form-control border-0 shadow-none"
+                            placeholder="Search In Invoices..."
+                            aria-label="Search..."
+                            id="date1"
+                            />
+                            <input
+                            type="date"
+                            class="form-control border-0 shadow-none"
+                            placeholder="Search In Invoices..."
+                            aria-label="Search..."
+                            id="date2"
+                            />
+                            <button
+                            type="button"
+                            class="btn btn-light"
+                            id="excel_date"
+                            style="margin-bottom:15px">
+                            <i class="bx bxs-download me-1"></i>
+                            </button> 
+                            <script>
+                          document.getElementById("excel_date").addEventListener("click",()=>{
+                            location.href="excel/invoice_excel_date.php?d1="+document.getElementById("date1").value+"&d2="+document.getElementById("date2").value
+                            // console.log(document.getElementById("date1"))
+                          });
+                        </script>
+
+                        </div>
+
                 <div class="table-responsive text-nowrap" style="min-height: 400px;">
+                
 
                   <table class="table" id="mytable>
                     <thead class="table-light">
@@ -777,6 +822,36 @@ require 'check.php';
       }
     });
   });
+
+
+
+  var input = document.getElementById("searchInputNumber");
+var tableBody = document.getElementById("table-body");
+
+// Add event listener to input field
+input.addEventListener("keyup", filterTable);
+
+function filterTable() {
+  // Get the input value and convert to uppercase
+  var filter = input.value.toUpperCase();
+
+  // Get all table rows
+  var rows = tableBody.getElementsByTagName("tr");
+
+  // Loop through rows and hide/show based on filter
+  for (var i = 0; i < rows.length; i++) {
+    var vehicleNumber = rows[i].getElementsByTagName("td")[0].innerText.toUpperCase();
+    var name = rows[i].getElementsByTagName("td")[1].innerText.toUpperCase();
+    var gst = rows[i].getElementsByTagName("td")[2].innerText.toUpperCase();
+    var vehicleName = rows[i].getElementsByTagName("td")[3].innerText.toUpperCase();
+    var trip = rows[i].getElementsByTagName("td")[4].innerText.toUpperCase();
+    if (vehicleNumber.includes(filter) || vehicleName.includes(filter) || gst.includes(filter)|| name.includes(filter)|| trip.includes(filter)) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+}
     </script>
  
  
